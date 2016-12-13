@@ -14,7 +14,7 @@ public class AppMain extends Application {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Layout.fxml"));	//fxmlloader »ý¼º
 	    Parent root = fxmlLoader.load();												//fxmlload
 	    
-	    Scene scene = new Scene(root, 300, 300);
+	    Scene scene = new Scene(root, 420, 420);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Tetris Game");
 		primaryStage.show();
