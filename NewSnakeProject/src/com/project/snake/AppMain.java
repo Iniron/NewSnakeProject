@@ -12,10 +12,13 @@ public class AppMain extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Layout.fxml"));	//fxmlloader »ý¼º
-	    Parent root = fxmlLoader.load();												//fxmlload
+	    Parent root = fxmlLoader.load();											//fxmlload
+	    ViewController cnt_view = fxmlLoader.getController();
+	    cnt_view.setPrimaryStage(primaryStage);
 	    
-	    Scene scene = new Scene(root, 420, 420);
+	    Scene scene = new Scene(root, 1200, 850);
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.setTitle("Tetris Game");
 		primaryStage.show();
 	}

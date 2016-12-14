@@ -5,16 +5,31 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
 
 <Pane fx:controller="com.project.snake.ViewController"
-		xmlns:fx="http://javafx.com/fxml/1">
+		xmlns:fx="http://javafx.com/fxml/1" stylesheets="@Layout_Style.css">
 	<!-- TODO Add Nodes -->
-	<BorderPane>
+	<BorderPane layoutX="40" layoutY="40">
 		<center>
-			<GridPane fx:id="gamePanel"/>
+			<GridPane fx:id="gamePanel" vgap="1" hgap="1"/>
 		</center>
 	</BorderPane>
-
+	<GridPane fx:id="snakePanel" vgap="1" hgap="1" layoutX="40" layoutY="40"/>
+	
+	
+	<VBox styleClass="topInfo" prefHeight="200" prefWidth="300" layoutX="840" layoutY="40" spacing="10">
+	<padding>
+		<Insets top="10" right="10" bottom="10" left="20"/>
+	</padding>
+		<Label styleClass="highscoreClass" fx:id="highscore" text="High Score:"/>
+		<Label styleClass="scoreClass" fx:id="score" text="Score:"/>
+		<Label styleClass="timeClass" fx:id="time" text="Time"/>
+		<Label styleClass="eatenfoodClass" fx:id="eatenfood" text="Eaten Food:"/>
+		<Label styleClass="levelClass" fx:id="level" text="Level:"/>
+	</VBox>
+	
 </Pane>
 
 
