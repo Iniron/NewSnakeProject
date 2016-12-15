@@ -81,6 +81,8 @@ public class ViewController implements Initializable {
 		//#ed6051 / 235, 95, 82 빨간색
 		//#2eb094 / 48, 176, 148 초록색
 		
+		//
+		
 		
 		//초기설정 -----------------------------------
 		head = new Point(HEGHT/2, WIDTH/2);
@@ -251,3 +253,43 @@ public class ViewController implements Initializable {
 		poly.setStrokeLineJoin(StrokeLineJoin.ROUND);		
 	}
 }
+
+
+//Polygon polygon = new Polygon();
+//polygon.getPoints().addAll(new Double[]{
+//		    0.0, 0.0,
+//		    10.0, 10.0,
+//		    20.0, 0.0,
+//		    20.0, 20.0,
+//		    0.0, 20.0});
+//fill(polygon);
+//grid.add(polygon, 1, 1);
+//
+//
+//polygon = new Polygon();
+//polygon.getPoints().addAll(new Double[]{
+//		    0.0, 0.0,
+//		    0.0, 20.0,
+//		    20.0, 20.0,
+//		    20.0, 0.0 });
+//fill(polygon);
+//grid.add(polygon, 1, 2);
+//
+//polygon = new Polygon();
+//polygon.getPoints().addAll(new Double[]{
+//		    0.0, 0.0,
+//		    0.0, 20.0,
+//		    20.0, 20.0,
+//		    20.0, 0.0 });
+//fill(polygon);
+//grid.add(polygon, 1, 3);
+//
+//polygon = new Polygon();
+//polygon.getPoints().addAll(new Double[]{
+//		    0.0, 0.0,
+//		    20.0, 0.0,
+//		    10.0, 20.0
+//		    });
+//fill(polygon);
+//polygon.setRotate(90);
+//grid.add(polygon, 1, 4);
