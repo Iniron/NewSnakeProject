@@ -11,15 +11,17 @@ public class AppMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Layout.fxml"));	//fxmlloader 持失
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Layout1.fxml"));	//fxmlloader 持失
 	    Parent root = fxmlLoader.load();											//fxmlload
 	    ViewController cnt_view = fxmlLoader.getController();
 	    cnt_view.setPrimaryStage(primaryStage);
 	    
-	    Scene scene = new Scene(root, 1200, 850);
+	    Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
-		primaryStage.setTitle("Tetris Game");
+		primaryStage.setTitle("Snake Game");
+		//primaryStage.setFullScreen(true);
+		//primaryStage.setMaximized(true);
 		primaryStage.show();
 	}
 	

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+
+<StackPane fx:controller="com.project.snake.ViewController"
+		xmlns:fx="http://javafx.com/fxml/1"  stylesheets="@Layout_Style.css">
+	<!-- TODO Add Nodes -->
+	<HBox alignment="CENTER" spacing="30">
+	<padding><Insets top="30" right="30" bottom="20" left="30"/></padding>
+		<StackPane>
+			<GridPane fx:id="gamePanel" vgap="1" hgap="1"/>
+			<GridPane fx:id="snakePanel" vgap="1" hgap="1" layoutX="40" layoutY="40"/>
+		</StackPane>
+	
+		<VBox spacing="20">
+			<Label styleClass="highscoreClass" fx:id="highscore" text="HIGH SCORE:"/>
+			<VBox styleClass="topInfo" prefHeight="200" prefWidth="300" spacing="20">
+				<padding><Insets top="10" right="10" bottom="10" left="20"/></padding>
+				
+					<Label styleClass="scoreClass" fx:id="score" text="SCORE:"/>
+					<Label styleClass="timeClass" fx:id="time" text="TIME:"/>
+					<Label styleClass="eatenfoodClass" fx:id="eatenfood" text="FOOD:"/>
+					
+			</VBox>
+			
+			<Label styleClass="pauseClass" fx:id="pause" text="Pause:"/>
+			<Label styleClass="pauseClass" fx:id="pause" text="Pause:"/>
+			
+			<VBox styleClass="bottomInfo" prefHeight="200" prefWidth="300" spacing="20">
+				<padding><Insets top="10" right="10" bottom="10" left="20"/></padding>
+				
+					<Label styleClass="timeClass" fx:id="time" text="TIME:"/>
+					<Label styleClass="eatenfoodClass" fx:id="eatenfood" text="EATEN FOOD:"/>
+					<Label styleClass="levelClass" fx:id="level" text="loading:608"/>
+					
+			</VBox>
+		</VBox>
+	</HBox>
+	<HBox styleClass="root" fx:id="startPanel" alignment="CENTER" opacity="0.9">
+		<VBox alignment="CENTER">
+			<Label styleClass="levelClass" fx:id="level" text="Snake Game"/>
+			
+			<GridPane hgap="30">
+				<Label styleClass="levelClass" text=" id" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+				<TextField styleClass="TextField" text="id" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+				<Label styleClass="levelClass" text=" pw" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+				<PasswordField text="pw" GridPane.columnIndex="1" GridPane.rowIndex="1"/>			
+			</GridPane>
+			
+		</VBox>
+	</HBox>
+	<HBox styleClass="root" fx:id="pausePanel" alignment="CENTER" opacity="0.9">
+		<VBox alignment="CENTER">
+			<Label styleClass="levelClass" fx:id="level" text="Game Pause"/>			
+		</VBox>
+	</HBox>
+	<HBox styleClass="root" fx:id="overPanel" alignment="CENTER" opacity="0.9">
+		<VBox alignment="CENTER">
+			<Label styleClass="levelClass" fx:id="level" text="Game Over"/>			
+		</VBox>
+	</HBox>
+</StackPane>
+
+
