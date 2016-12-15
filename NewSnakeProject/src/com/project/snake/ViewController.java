@@ -210,7 +210,7 @@ public class ViewController implements Initializable {
 	
 	public void initGameView(){
 		
-		//startPanel.setVisible(false);
+		startPanel.setVisible(false);
 		overPanel.setVisible(false);
 		pausePanel.setVisible(false);
 		
@@ -253,43 +253,3 @@ public class ViewController implements Initializable {
 		poly.setStrokeLineJoin(StrokeLineJoin.ROUND);		
 	}
 }
-
-
-//Polygon polygon = new Polygon();
-//polygon.getPoints().addAll(new Double[]{
-//		    0.0, 0.0,
-//		    10.0, 10.0,
-//		    20.0, 0.0,
-//		    20.0, 20.0,
-//		    0.0, 20.0});
-//fill(polygon);
-//grid.add(polygon, 1, 1);
-//
-//
-//polygon = new Polygon();
-//polygon.getPoints().addAll(new Double[]{
-//		    0.0, 0.0,
-//		    0.0, 20.0,
-//		    20.0, 20.0,
-//		    20.0, 0.0 });
-//fill(polygon);
-//grid.add(polygon, 1, 2);
-//
-//polygon = new Polygon();
-//polygon.getPoints().addAll(new Double[]{
-//		    0.0, 0.0,
-//		    0.0, 20.0,
-//		    20.0, 20.0,
-//		    20.0, 0.0 });
-//fill(polygon);
-//grid.add(polygon, 1, 3);
-//
-//polygon = new Polygon();
-//polygon.getPoints().addAll(new Double[]{
-//		    0.0, 0.0,
-//		    20.0, 0.0,
-//		    10.0, 20.0
-//		    });
-//fill(polygon);
-//polygon.setRotate(90);
-//grid.add(polygon, 1, 4);

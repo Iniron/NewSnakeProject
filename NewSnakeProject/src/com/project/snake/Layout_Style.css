@@ -2,6 +2,14 @@
     -fx-background-color: #233436;
 }
 
+
+/*--------------Pane--------------*/
+.memberInfo{
+	-fx-border-color: rgba(58,181,204,0.7);
+	-fx-border-radius: 5 5 5 5;
+	-fx-border-width: 8px;
+}
+
 .topInfo{
 	-fx-background-color: rgba(25,33,33,0.6);
 	-fx-background-radius: 5 5 5 5;
@@ -12,40 +20,76 @@
 	-fx-background-radius: 5 5 5 5;
 }
 
-
-.highscoreClass{
-	-fx-font-family: "04B_19";
-	-fx-text-fill: #e0e0e0;
-	-fx-font-size: 40px;
-}
-.scoreClass{
-	-fx-font-family: "04B_19";
-	-fx-text-fill: #e0e0e0;
-	-fx-font-size: 40px;
-}
-.timeClass{
-	-fx-font-family: "04B_19";
-	-fx-text-fill: #35b5cc;
-	-fx-font-size: 40px;
-}
-.eatenfoodClass{
-	-fx-font-family: "04B_19";
-	-fx-text-fill: #e0e0e0;
-	-fx-font-size: 40px;
+.highScoreInfo{
+	-fx-background-color: rgba(255,255,255,0.9);
 }
 
-.levelClass{
+
+/*--------------Label--------------*/
+Label{
+	-fx-font-family: "04B_19";
+}
+
+.highScoreLabel{
 	-fx-font-family: "04B_19";
 	-fx-text-fill: #e0e0e0;
 	-fx-font-size: 40px;
-}
-
-.pauseClass{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: rgba(25,33,33,0.9);
+}
+
+.idLabel{
+	-fx-font-family: "04B_19";
+	-fx-text-fill: #e0e0e0;
+	-fx-font-size: 30px;
+	-fx-vertical-align: middle;
+}
+
+.scoreLabel{
+	-fx-font-family: "04B_19";
+	-fx-text-fill: #e0e0e0;
+	-fx-font-size: 40px;
+}
+
+.bonusLabel{
+	-fx-font-family: "04B_19";
+	-fx-text-fill: rgba(235,95,82,0.9);
+	-fx-font-size: 40px;
+}
+
+.pauseLabel{
+	-fx-font-family: "04B_19";
+	-fx-text-fill: rgba(25,33,33,1.0);
 	-fx-font-size: 50px;
 }
 
+.pauseLabel:hover{
+	-fx-font-family: "04B_19";
+	-fx-text-fill: rgba(0,0,0,0.9);
+	-fx-font-size: 50px;
+}
+
+
+.foodLabel{
+	-fx-font-family: "04B_19";
+	-fx-text-fill: #e0e0e0;
+	-fx-font-size: 40px;
+
+}
+
+.timeLabel{
+	-fx-font-family: "04B_19";
+	-fx-text-fill: #35b5cc;
+	-fx-font-size: 40px;
+
+}
+
+.levelLabel{
+	-fx-font-family: "04B_19";
+	-fx-text-fill: #e0e0e0;
+	-fx-font-size: 40px;
+}
+
+/*--------------textField--------------*/
 .TextField
 {
     -fx-text-fill        : #537394;
