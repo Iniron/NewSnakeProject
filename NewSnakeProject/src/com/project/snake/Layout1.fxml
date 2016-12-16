@@ -14,7 +14,8 @@
 
 <StackPane fx:controller="com.project.snake.ViewController"
 		xmlns:fx="http://javafx.com/fxml/1"  stylesheets="@Layout_Style.css">
-	<!-- TODO Add Nodes -->
+	
+	<!-- ==================== Game Panel ==================== -->
 	<HBox alignment="CENTER" spacing="30">
 	<padding><Insets top="30" right="30" bottom="20" left="30"/></padding>
 		<StackPane>
@@ -22,15 +23,17 @@
 			<GridPane fx:id="snakePanel" vgap="1" hgap="1" layoutX="40" layoutY="40"/>
 		</StackPane>
 	
+	<!-- ==================== Side Panel ==================== -->
 		<VBox spacing="20">
 			<VBox styleClass="memberInfo" prefHeight="100" prefWidth="300">
+			<padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 				<VBox styleClass="highScoreInfo" alignment="CENTER">
 					<padding><Insets top="10" bottom="10"/></padding>	
-						<Label styleClass="highScoreLabel" text="HIGH SCORE"/>
-						<Label styleClass="timeLabel" fx:id="highScoreLabel" text="0"/>
+						<Label styleClass="highScoreTileLabel" text="HIGH SCORE"/>
+						<Label styleClass="highScoreLabel" fx:id="highScoreLabel" text="0"/>
 				</VBox>
 				<HBox alignment="CENTER">
-					<padding><Insets top="10" bottom="10"/></padding>
+					<padding><Insets top="10"/></padding>
 					<Label  styleClass="idLabel" text="ID:" textAlignment="CENTER"/>
 					<Label styleClass="idLabel" fx:id="id" text="SNAKE" textAlignment="CENTER"/>			
 				</HBox>
@@ -38,56 +41,89 @@
 			<VBox styleClass="topInfo" prefHeight="150" prefWidth="300" spacing="20">
 				<padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 				<GridPane vgap="20">
-					<Label styleClass="scoreLabel" prefWidth="150" text="SCORE:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+					<Label styleClass="scoreLabel" prefWidth="150" text="ScorE:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 					<Label styleClass="scoreLabel" prefWidth="150" fx:id="score" text="0" GridPane.columnIndex="1" 
 										GridPane.rowIndex="0" alignment="CENTER_RIGHT"/>
-					<Label styleClass="bonusLabel" prefWidth="150" text="BONUS:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+					<Label styleClass="bonusLabel" prefWidth="150" text="BonuS:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
 					<Label styleClass="bonusLabel" prefWidth="150" fx:id="time" text="100" GridPane.columnIndex="1"
 										GridPane.rowIndex="1" alignment="CENTER_RIGHT"/>
 				</GridPane>
 			</VBox>
 			<HBox spacing="10">
-			<Label styleClass="pauseLabel" fx:id="pause" text="·Pause"/>
-			<Label styleClass="pauseLabel" fx:id="pause" text="·Quit"/>
+			<Label styleClass="pauseLabel" fx:id="pauseLabel" text="·Pause"/>
+			<Label styleClass="pauseLabel" fx:id="quitLabel" text="·Quit"/>
 			</HBox>
 			<VBox styleClass="bottomInfo" prefHeight="150" prefWidth="300" spacing="20">
 				<padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 				<GridPane vgap="20">
-					<Label styleClass="foodLabel" prefWidth="150" text="FOOD:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+					<Label styleClass="foodLabel" prefWidth="150" text="FooD:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 					<Label styleClass="foodLabel" prefWidth="150" fx:id="foodLabel" text="0" GridPane.columnIndex="1" 
 										GridPane.rowIndex="0" alignment="CENTER_RIGHT"/>
-					<Label styleClass="levelLabel" prefWidth="150" text="LEVEL:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-					<Label styleClass="levelLabel" prefWidth="150" fx:id="levelLabel" text="0" GridPane.columnIndex="1"
+					<Label styleClass="levelLabel" prefWidth="150" text="LeveL:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+					<Label styleClass="levelLabel" prefWidth="150" fx:id="levelLabel" text="1" GridPane.columnIndex="1"
 										GridPane.rowIndex="1" alignment="CENTER_RIGHT"/>	
-					<Label styleClass="timeLabel" prefWidth="150" text="TIME:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+					<Label styleClass="timeLabel" prefWidth="150" text="TimE:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
 					<Label styleClass="timeLabel" prefWidth="150" fx:id="timeLabel" text="00:00" GridPane.columnIndex="1"
 										GridPane.rowIndex="2" alignment="CENTER_RIGHT"/>
-								
 				</GridPane>
 			</VBox>
 		</VBox>
 	</HBox>
-	<HBox styleClass="root" fx:id="startPanel" alignment="CENTER" opacity="0.9">
-		<VBox alignment="CENTER">
-			<Label styleClass="levelLabel" fx:id="level" text="Snake Game"/>
-			
-			<GridPane hgap="30">
-				<Label styleClass="levelLabel" text=" id" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-				<TextField styleClass="TextField" text="id" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-				<Label styleClass="levelLabel" text=" pw" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-				<PasswordField text="pw" GridPane.columnIndex="1" GridPane.rowIndex="1"/>			
-			</GridPane>
-			
+	
+	<!-- ==================== Login Panel ==================== -->
+	<HBox styleClass="root" fx:id="loginPanel" alignment="CENTER" opacity="0.9">
+		<VBox alignment="CENTER" spacing="20">
+			<Label styleClass="overLabel" text="Snake Game"/>
+			<HBox alignment="CENTER">
+				<GridPane hgap="30" >
+					<Label styleClass="levelLabel" text="ID" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+					<TextField styleClass="TextField" fx:id="LoginIdText" text="id" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+					<Label styleClass="levelLabel" text="PW" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+					<PasswordField styleClass="TextField" fx:id="LoginPwText" text="pw" GridPane.columnIndex="1" GridPane.rowIndex="1"/>			
+				</GridPane>
+			</HBox>
+			<HBox alignment="CENTER" spacing="20">
+				<Label styleClass="pauseLabel" text="Login" />
+				<Label styleClass="pauseLabel" text="Join" />
+			</HBox>
+			<Label styleClass="alert" text="" />
 		</VBox>
 	</HBox>
+	<!-- ==================== Join Panel ==================== -->
+	<HBox styleClass="root" fx:id="joinPanel" alignment="CENTER" opacity="0.9">
+		<VBox alignment="CENTER" spacing="20">
+			<Label styleClass="overLabel" text="Can You Join Us?"/>
+			<HBox alignment="CENTER">
+				<GridPane hgap="30" >
+					<Label styleClass="levelLabel" text="ID" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+					<TextField styleClass="TextField" fx:id="joinIdText" text="id" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+					<Label styleClass="levelLabel" text="PW" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+					<PasswordField styleClass="TextField" fx:id="joinPwText" text="pw" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+					<Label styleClass="levelLabel" text="PW" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+					<PasswordField styleClass="TextField" fx:id="joinPwCheckText" text="pw" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+				</GridPane>
+			</HBox>
+			<HBox alignment="CENTER" spacing="20">
+				<Label styleClass="pauseLabel" text="Yes" />
+				<Label styleClass="pauseLabel" text="No" />
+			</HBox>
+			<Label styleClass="alert" text="" />
+		</VBox>
+	</HBox>	
+	<!-- ==================== pause Panel ==================== -->
 	<HBox styleClass="root" fx:id="pausePanel" alignment="CENTER" opacity="0.9">
 		<VBox alignment="CENTER">
-			<Label styleClass="levelLabel" fx:id="level" text="Game Pause"/>			
+			<Label styleClass="overLabel" text="Game Pause"/>			
 		</VBox>
 	</HBox>
+	<!-- ==================== over Panel ==================== -->
 	<HBox styleClass="root" fx:id="overPanel" alignment="CENTER" opacity="0.9">
-		<VBox alignment="CENTER">
-			<Label styleClass="levelLabel" fx:id="level" text="Game Over"/>			
+		<VBox alignment="CENTER" spacing="20">
+			<Label styleClass="overLabel" text="Game Over"/>
+			<VBox alignment="CENTER">
+				<Label styleClass="pauseLabel" text="·Restart"/>
+				<Label styleClass="pauseLabel" text="·Quit"/>
+			</VBox>
 		</VBox>
 	</HBox>
 </StackPane>
