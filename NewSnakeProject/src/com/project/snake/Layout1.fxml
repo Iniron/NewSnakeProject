@@ -42,10 +42,10 @@
 				<padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 				<GridPane vgap="20">
 					<Label styleClass="scoreLabel" prefWidth="150" text="ScorE:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-					<Label styleClass="scoreLabel" prefWidth="150" fx:id="score" text="0" GridPane.columnIndex="1" 
+					<Label styleClass="scoreLabel" prefWidth="150" fx:id="scoreLabel" text="0" GridPane.columnIndex="1" 
 										GridPane.rowIndex="0" alignment="CENTER_RIGHT"/>
 					<Label styleClass="bonusLabel" prefWidth="150" text="BonuS:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-					<Label styleClass="bonusLabel" prefWidth="150" fx:id="time" text="100" GridPane.columnIndex="1"
+					<Label styleClass="bonusLabel" prefWidth="150" fx:id="bonusLabel" text="100" GridPane.columnIndex="1"
 										GridPane.rowIndex="1" alignment="CENTER_RIGHT"/>
 				</GridPane>
 			</VBox>

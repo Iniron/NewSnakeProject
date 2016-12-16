@@ -2,29 +2,52 @@ package com.project.snake;
 
 import java.util.LinkedList;
 
+import javafx.scene.paint.Paint;
+
 public class SnakeController {
 	
+	public static Direction direction;
 	
-	LinkedList<Point> snake =  new LinkedList<>();
+	ColorGenerator colorGenerator; 
+	LinkedList<Point> snake;
+	LinkedList<Paint> bodyList;
 	GameController game_ctr;
 	Point head;
 	Point tail;
-	Point food;
-	Direction direction;
+	Point food;	
 	
 	public SnakeController(GameController game_ctr) {
 		this.game_ctr = game_ctr; 
+		colorGenerator = new ColorGenerator(); 
+		snake =  new LinkedList<>();
+		bodyList =  new LinkedList<>();
+		colorGenerator.ColorCreate();
 	}
 	
-	public void headCreate(){
+	public void snakeCreate(){
 		head = new Point(ViewController.HEGHT/2, ViewController.WIDTH/2);		
 		snake.add(head);
 		direction = Direction.UP;
+		
+		tail = new Point(head.getY()+1, head.getX());
+		snake.addFirst(tail);
 	}
 	
 	public void foodCreate(){
-		food = new Point(2, 2);
-		//랜덤 생성 로직
+		int ranY = (int)(Math.random()*ViewController.HEGHT);
+		int ranX = (int)(Math.random()*ViewController.WIDTH);		
+		food = new Point(ranY, ranX);
+		
+		for(int i = 0; i < snake.size(); i++) {
+			int x = snake.get(i).getX();
+			int y = snake.get(i).getY();
+			if (x == ranX && y == ranY) {
+				foodCreate(); 
+				return;
+			}
+		}
+		
+		bodyList.add(colorGenerator.getRandomColor());
 	}
 	
 	public void addHead(){
@@ -36,5 +59,7 @@ public class SnakeController {
 		head = new Point(y, x);
 		snake.add(head);
 		snake.poll();
+		tail = snake.peek();
 	}
+	
 }

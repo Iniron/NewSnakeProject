@@ -11,10 +11,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -45,18 +48,41 @@ public class ViewController implements Initializable {
 	private HBox overPanel;
 	
 	@FXML
-	private Label score;	
-	
-	@FXML
 	private TextField loginIdText;
 	
+	@FXML
+	private Label scoreLabel;
+	
+	@FXML
+	private Label bonusLabel;
+	
+	@FXML
+	private Label foodLabel;
+	
+	@FXML
+	private Label levelLabel;
+	
+	@FXML
+	private Label timeLabel;
+		
 	Stage primaryStage;
 	Rectangle[][] gameRects;
 	Rectangle[][] snakeRects;
 	
-	Timeline timeline;
+	Timeline runThread;
+	int runSpeed = 100;
+	Timeline timeThread;
 	int timeSpeed = 100;
 	GameController game_ctr;
+	
+	public int bonusCnt = 100;
+	public int foodCnt = 0;
+	private int timeCnt = 0;
+	
+	Image haedImage = new Image("head.png");
+	Image tailImage = new Image("tail.png");
+	ImagePattern haedImgPtn = new ImagePattern(haedImage);	
+	ImagePattern tailImgPtn = new ImagePattern(tailImage);
 	
 	public void setPrimaryStage(Stage primaryStage){
 		this.primaryStage = primaryStage;
@@ -65,8 +91,9 @@ public class ViewController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Font.loadFont(getClass().getResource("04B_19__.ttf").toExternalForm(), 38);
-		game_ctr = new GameController(this);				
-				
+		game_ctr = new GameController(this);
+		//bonusLabel.textProperty().bind(arg0);
+		
 		gamePanel.setFocusTraversable(true);
 		gamePanel.requestFocus();
 		gamePanel.setOnKeyPressed(event->{
@@ -97,23 +124,51 @@ public class ViewController implements Initializable {
 			}
 		});
 	}
-	
-	public void repaintSnake(LinkedList<Point> snake, Point food){
+
+	public void repaintSnake(LinkedList<Point> snake, LinkedList<Paint> bodyList, Point head, Point tail, Point food){
 		for(int i=0; i<HEGHT; i++){
 			for(int j=0; j<WIDTH; j++){
 				snakeRects[i][j].setFill(Color.TRANSPARENT);
-				if(food.getX()==j && food.getY()==i){
-					rectFill(snakeRects[j][i], Color.GREEN);
-					//snakeRects[j][i].setStyle("-fx-background-color: green;");
+				if((food.getX()==j) && (food.getY()==i)){
+					snakeRects[i][j].setFill(bodyList.get(bodyList.size()-1));
 				}
 			}
 		}
+		
+		//for(int i=snake.size()-1; i>=0; i--){
 		for(int i=0; i<snake.size(); i++){
 			int y = snake.get(i).getY();
 			int x = snake.get(i).getX();			
-			rectFill(snakeRects[y][x], Color.web("#35b5cc"));
-			snakeRects[y][x].setOpacity(0.8);
+			//if((head.getY()==y) && (head.getX()==x))
+			if(i==snake.size()-1)
+				repaintHead(y, x);
+			//else if((tail.getY()==y) && (tail.getX()==x))
+			else if(i==0)
+				repaintTail(y, x, snake);
+			else {
+				rectFill(snakeRects[y][x], bodyList.get(bodyList.size()-1-i));
+				//rectFill(snakeRects[y][x], colorlist.get(i-1));
+			}
 		}
+	}
+	
+	public void repaintHead(int y, int x){
+		snakeRects[y][x].setFill(haedImgPtn);
+		if(SnakeController.direction == Direction.RIGHT) 	 snakeRects[y][x].setRotate(90);
+		else if(SnakeController.direction == Direction.DOWN) snakeRects[y][x].setRotate(180);
+		else if(SnakeController.direction == Direction.LEFT) snakeRects[y][x].setRotate(270);
+		else												 snakeRects[y][x].setRotate(0);
+	}
+	
+	public void repaintTail(int y, int x, LinkedList<Point> snake){
+		snakeRects[y][x].setFill(tailImgPtn);
+		int front_x = snake.get(1).getX();
+		int front_y = snake.get(1).getY();
+		
+		if(front_x > x) 	 snakeRects[y][x].setRotate(90);
+		else if(front_x < x) snakeRects[y][x].setRotate(270);
+		else if(front_y > y) snakeRects[y][x].setRotate(180);
+		else				 snakeRects[y][x].setRotate(0);
 	}
 	
 	public void initGameView(){
@@ -149,32 +204,31 @@ public class ViewController implements Initializable {
 		}
 	}
 	
-	public void startView(Point head, Point food){
-		
+	public void startView(Point head, Point tail, Point food){
+				
 		loginPanel.setVisible(false);
 		
 		int y = head.getY();							
-		int x = head.getX();							//헤드를 인자로 받아 좌표검색		
-		snakeRects[y][x].setFill(Color.web("#35b5cc")); //좌표에 헤드를 위치한다.
+		int x = head.getX();				//헤드를 인자로 받아 좌표검색		
+		snakeRects[y][x].setFill(haedImgPtn); //좌표에 헤드를 위치한다.
 		
-		y = food.getY();
-		x = food.getX();		
-		snakeRects[y][x].setFill(Color.GREEN);
-		snakeRects[y][x].setStyle("-fx-background-color:white;");	//food를 위치한다.
+		y = tail.getY();
+		x = tail.getX();
+		snakeRects[y][x].setFill(tailImgPtn); //좌표에 꼬리를 위치한다.
 		
 		//---------------------------------
 		//각종 시간과 점수 초기화 코드 작성
 		//---------------------------------
 				
-		if(timeline==null){
-			timeline = new Timeline(new KeyFrame(Duration.millis(timeSpeed), event -> game_ctr.changeSnake()));
-			timeline.setCycleCount(Timeline.INDEFINITE);
-			timeline.play();
+		if(runThread==null){
+			runThread = new Timeline(new KeyFrame(Duration.millis(runSpeed), event -> game_ctr.changeSnake()));
+			runThread.setCycleCount(Timeline.INDEFINITE);
+			runThread.play();
 		}
 	}
 	
 	public void gameOverView(){
-		timeline.stop();
+		runThread.stop();
 		overPanel.setVisible(true);
 		System.out.println("게임오버");
 	}
@@ -183,23 +237,66 @@ public class ViewController implements Initializable {
 		if(pausePanel.isVisible()) 	pausePanel.setVisible(false);
 		else						pausePanel.setVisible(true);
 
-		if(timeline.getStatus()==Status.RUNNING)
-		timeline.pause();
-		else if(timeline.getStatus()==Status.PAUSED)
-		timeline.play();
+		if(runThread.getStatus()==Status.RUNNING)
+		runThread.pause();
+		else if(runThread.getStatus()==Status.PAUSED)
+		runThread.play();
 	}
 	
-	public void rectFill(Rectangle rect, Color color){
+	public void rectFill(Rectangle rect, Paint color){
 		rect.setFill(color);
 		rect.setArcHeight(10);
 		rect.setArcWidth(10);
 	}
+	
+	
+	
+	public void updateSidePanel() {
+		if (bonusCnt > 10) {
+			bonusCnt--;
+		}
+		timeCnt++;
+		int sec = (timeCnt / 10) % 60;
+		int min = (timeCnt / 10 / 60) % 60;
+		String DurationTime = String.format("%02d:%02d", min, sec);
+		
+		foodLabel.setText(Integer.toString(foodCnt));
+		bonusLabel.setText(Integer.toString(bonusCnt));
+		timeLabel.setText(DurationTime);
+	}
+	
+	public void setTimer(){
+		 if (timeThread == null) {
+			 timeThread = new Timeline();
+	         KeyFrame k = new KeyFrame(Duration.millis(timeSpeed), event -> updateSidePanel());
+	         timeThread.getKeyFrames().add(k);
+	         timeThread.setCycleCount(Timeline.INDEFINITE);
+	         timeThread.play();
+	      }
+	}
+	
+	
+	
+// 	키바꾸는 로직
+//	if(event.getCode() == KeyCode.T){
+//		turnKey();
+//	}
+//	public void turnKey(){
+//		Direction key1 = Direction.UP;
+//		Direction key2 = Direction.RIGHT;
+//		Direction key3 = Direction.LEFT;
+//		Direction key4 = Direction.DOWN;
+//		
+//		if(key1==Direction.UP){
+//		key1 = Direction.DOWN;
+//		key2 = Direction.LEFT;
+//		key3 = Direction.RIGHT;
+//		key4 = Direction.UP;
+//		}else{
+//		key1 = Direction.UP;
+//		key2 = Direction.RIGHT;
+//		key3 = Direction.LEFT;
+//		key4 = Direction.DOWN;
+//		}
+//	}
 }
-
-//#3bbdc4 / 60, 187, 194 판넬파란색
-//#2cb8d1 / 44, 184, 209 하늘색
-//#f2b233 / 240, 174, 53 주황색
-//#8342bd / 129, 66, 189 보라색
-//#e388cc / 227, 136, 203 분홍색
-//#ed6051 / 235, 95, 82 빨간색
-//#2eb094 / 48, 176, 148 초록색
