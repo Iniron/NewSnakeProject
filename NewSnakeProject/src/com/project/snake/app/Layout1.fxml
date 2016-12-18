@@ -12,7 +12,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.PasswordField?>
 
-<StackPane fx:controller="com.project.snake.ViewController"
+<StackPane fx:controller="com.project.snake.app.ViewController"
 		xmlns:fx="http://javafx.com/fxml/1"  stylesheets="@Layout_Style.css">
 	
 	<!-- ==================== Game Panel ==================== -->
@@ -38,11 +38,11 @@
 					<Label styleClass="idLabel" fx:id="id" text="SNAKE" textAlignment="CENTER"/>			
 				</HBox>
 			</VBox>
-			<VBox styleClass="topInfo" prefHeight="150" prefWidth="300" spacing="20">
+			<VBox styleClass="topInfo" prefWidth="300" spacing="20">
 				<padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 				<GridPane vgap="20">
 					<Label styleClass="scoreLabel" prefWidth="150" text="ScorE:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-					<Label styleClass="scoreLabel" prefWidth="150" fx:id="scoreLabel" text="0" GridPane.columnIndex="1" 
+					<Label styleClass="scoreLabel" prefWidth="150" fx:id="scoreLabel" text="1444000" GridPane.columnIndex="1" 
 										GridPane.rowIndex="0" alignment="CENTER_RIGHT"/>
 					<Label styleClass="bonusLabel" prefWidth="150" text="BonuS:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
 					<Label styleClass="bonusLabel" prefWidth="150" fx:id="bonusLabel" text="100" GridPane.columnIndex="1"
@@ -53,7 +53,7 @@
 			<Label styleClass="pauseLabel" fx:id="pauseLabel" text="·Pause"/>
 			<Label styleClass="pauseLabel" fx:id="quitLabel" text="·Quit"/>
 			</HBox>
-			<VBox styleClass="bottomInfo" prefHeight="150" prefWidth="300" spacing="20">
+			<VBox styleClass="bottomInfo" prefWidth="300" spacing="20">
 				<padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 				<GridPane vgap="20">
 					<Label styleClass="foodLabel" prefWidth="150" text="FooD:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
@@ -77,14 +77,14 @@
 			<HBox alignment="CENTER">
 				<GridPane hgap="30" >
 					<Label styleClass="levelLabel" text="ID" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-					<TextField styleClass="TextField" fx:id="LoginIdText" text="id" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+					<TextField styleClass="TextField" fx:id="loginIdText" text="id" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 					<Label styleClass="levelLabel" text="PW" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-					<PasswordField styleClass="TextField" fx:id="LoginPwText" text="pw" GridPane.columnIndex="1" GridPane.rowIndex="1"/>			
+					<PasswordField styleClass="TextField" fx:id="loginPwText" text="pw" GridPane.columnIndex="1" GridPane.rowIndex="1"/>			
 				</GridPane>
 			</HBox>
 			<HBox alignment="CENTER" spacing="20">
-				<Label styleClass="pauseLabel" text="Login" />
-				<Label styleClass="pauseLabel" text="Join" />
+				<Label styleClass="pauseLabel" fx:id="loginLabel" text="Login" />
+				<Label styleClass="pauseLabel" fx:id="joinLabel" text="Join" />
 			</HBox>
 			<Label styleClass="alert" text="" />
 		</VBox>

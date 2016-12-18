@@ -1,4 +1,4 @@
-package com.project.snake;
+package com.project.snake.app;
 
 import java.util.LinkedList;
 

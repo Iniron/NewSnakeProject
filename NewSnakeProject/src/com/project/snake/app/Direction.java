@@ -1,4 +1,4 @@
-package com.project.snake;
+package com.project.snake.app;
 
 public enum Direction {
 	UP, 

@@ -54,73 +54,62 @@ Label{
 }
 
 .highScoreTileLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: #e0e0e0;
 	-fx-font-size: 40px;
 	-fx-text-fill: rgba(25,33,33,0.9);
 }
 
 .highScoreLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: #e0e0e0;
 	-fx-font-size: 60px;
 	-fx-text-fill: rgba(25,33,33,0.9);
 }
 
 .idLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: #e0e0e0;
 	-fx-font-size: 30px;
 	-fx-vertical-align: middle;
 }
 
 .scoreLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: #e0e0e0;
-	-fx-font-size: 40px;
+	-fx-font-size: 37px;
 }
 
 .bonusLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: rgba(235,95,82,0.9);
-	-fx-font-size: 40px;
+	-fx-font-size: 37px;
 }
 
 .pauseLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: rgba(25,33,33,1.0);
 	-fx-font-size: 50px;
 }
 
 .pauseLabel:hover{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: rgba(0,0,0,0.9);
 	-fx-font-size: 50px;
 }
 
 
 .foodLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: #e0e0e0;
-	-fx-font-size: 40px;
+	-fx-font-size: 37px;
 
 }
 
 .timeLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: #35b5cc;
-	-fx-font-size: 40px;
+	-fx-font-size: 37px;
 
 }
 
 .levelLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: #e0e0e0;
-	-fx-font-size: 40px;
+	-fx-font-size: 37px;
 }
 
 .overLabel{
-	-fx-font-family: "04B_19";
 	-fx-text-fill: #e0e0e0;
 	-fx-font-size: 60px;
 }
