@@ -17,10 +17,6 @@ public class GameController {
 		this.view_ctr = view_ctr;							//ViewController의 객체를 인자로 받는다.
 		snake_ctr = new SnakeController(this);				//SnakeController 객체 생성
 		network = new SnakeGameClient(this);				//서버와 연결
-		
-		//SnakeDTO data = new SnakeDTO("abc", "123", 0, 0, 0, 0);
-		//network.checkLogin(data);
-		
 		view_ctr.initGameView();					
 	}
 		
@@ -29,6 +25,11 @@ public class GameController {
 		snake_ctr.foodCreate();
 		view_ctr.startView(snake_ctr.head, snake_ctr.tail, snake_ctr.food);
 		view_ctr.setTimer();
+	}
+	
+	public void gameOver(){
+		checkUpdate(view_ctr.member.getId(), view_ctr.scoreCnt, view_ctr.foodCnt, view_ctr.levelCnt, view_ctr.timeCnt);
+		view_ctr.gameOverView();
 	}
 	
 	public void changeDirection(Direction direction){
@@ -56,7 +57,7 @@ public class GameController {
 		int x = snake_ctr.head.getX() + off_x;
 
 		if(x<0 || x>ViewController.WIDTH-1 || y<0 || y>ViewController.HEGHT-1){			//벽에 박은 경우
-			view_ctr.gameOverView();
+			gameOver();
 			return;
 		}		
 		else if(snake_ctr.food.getY()==y && snake_ctr.food.getX()==x){					//food를 먹은 경우
@@ -76,22 +77,48 @@ public class GameController {
 			
 			return;
 		}else if(view_ctr.snakeRects[y][x].getFill()!=Color.TRANSPARENT){	//위의 모든 경우도 아니고 투명도 아니라면 body충돌
-			view_ctr.gameOverView();
+			gameOver();
 			return;
 		}
-		
 		snake_ctr.move(y, x);
 	}
 	
 	public void checkLogin(String id, String password){
 		SnakeDTO data = new SnakeDTO("login", id, password, 0, 0, 0, 0);
-		data = network.Login(data);
+		data = network.sendData(data);
+		System.out.println(data.getStatus());
+		if(data.getStatus().equals("loginok")){				//로그인 성공시에만 데이터 저장
+			view_ctr.member.setId(data.getId());
+			view_ctr.member.setPassword(data.getPassword());
+			view_ctr.member.setT_food(data.getT_food());
+			view_ctr.member.setT_score(data.getT_score());
+			view_ctr.member.setT_level(data.getT_level());
+			view_ctr.member.setT_time(data.getT_time());
+		}		
+		view_ctr.loginView(data.getStatus());
 	}
 	
-	public void checkJoin(){
+	public void checkJoin(String id, String password, String checkPassword){
+		if(password.equals(checkPassword)){
+			SnakeDTO data = new SnakeDTO("join", id, password, 0, 0, 0, 0);
+			data = network.sendData(data);
+			System.out.println(data.getStatus());
+			view_ctr.joinView(data.getStatus());
+		}else{
+			view_ctr.joinView("joinno");
+		}
+	}
+	
+	public void checkUpdate(String id, int t_score, int t_food, int t_level, int t_time){
+		if(view_ctr.member.getT_score()>t_score) t_score = view_ctr.member.getT_score();
+		if(view_ctr.member.getT_food()>t_food) t_food = view_ctr.member.getT_food();
+		if(view_ctr.member.getT_level()>t_level) t_level = view_ctr.member.getT_level();
+		if(view_ctr.member.getT_time()>t_time) t_time = view_ctr.member.getT_time();
 		
+		SnakeDTO data = new SnakeDTO("update", id, null, t_score, t_food, t_level, t_time);
+		data = network.sendData(data);
+		
+		System.out.println(data.getStatus());
 	}
-	
-
 	
 }

@@ -32,9 +32,9 @@ public class SnakeGameClient {
 		}		
 	}	
 	
-	public SnakeDTO Login(SnakeDTO sendData){
+	public SnakeDTO sendData(SnakeDTO sendData){
 		try {
-			oos.reset();
+			//oos.reset();
 			oos.writeObject(sendData);
 			oos.flush();
 			
@@ -45,25 +45,5 @@ public class SnakeGameClient {
 			e.printStackTrace();
 			return null;
 		}		
-	}
-	
-	public void Join(SnakeDTO data){
-		try {
-			oos.reset();
-			oos.writeObject(data);
-			oos.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		 
-	}
-	
-	public void ScoreUpdate(SnakeDTO data){
-		try {
-			oos.reset();
-			oos.writeObject(data);
-			oos.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		 
 	}
 }

@@ -114,6 +114,11 @@ Label{
 	-fx-font-size: 60px;
 }
 
+.alertLabel{
+	-fx-text-fill: rgba(235,95,82,0.9);
+	-fx-font-size: 40px;
+}
+
 /*--------------textField--------------*/
 .TextField
 {

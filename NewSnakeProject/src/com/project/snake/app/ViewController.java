@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+import com.project.snake.database.SnakeDTO;
+
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -33,50 +35,56 @@ public class ViewController implements Initializable {
 	//---------- Pane ----------
 	@FXML
 	private GridPane gamePanel;
-	
 	@FXML
 	private GridPane snakePanel;
-	
 	@FXML
 	private HBox loginPanel;
-	
 	@FXML
 	private HBox joinPanel;
-
 	@FXML
 	private HBox pausePanel;
-	
 	@FXML
 	private HBox overPanel;
 	
 	//---------- TextField ----------
 	@FXML
 	private TextField loginIdText;
-	
 	@FXML
 	private PasswordField loginPwText;
+	@FXML
+	private TextField joinIdText;
+	@FXML
+	private PasswordField joinPwText;
+	@FXML
+	private PasswordField joinPwCheckText;
 	
 	//---------- Label ----------
 	@FXML
+	private Label highScoreLabel;
+	@FXML
+	private Label idLabel;
+	@FXML
 	private Label scoreLabel;
-	
 	@FXML
 	private Label bonusLabel;
-	
 	@FXML
 	private Label foodLabel;
-	
 	@FXML
 	private Label levelLabel;
-	
 	@FXML
 	private Label timeLabel;
-	
 	@FXML
 	private Label loginLabel;
-	
 	@FXML
 	private Label joinLabel;
+	@FXML
+	private Label loginAlert;	
+	@FXML
+	private Label yesLabel;
+	@FXML
+	private Label noLabel;
+	@FXML
+	private Label joinAlert;	
 
 	GameController game_ctr;
 	Stage primaryStage;
@@ -93,9 +101,11 @@ public class ViewController implements Initializable {
 	public int foodCnt = 0;
 	public int scoreCnt = 0;
 	public int levelCnt = 1;
-	private int timeCnt = 0;
-	 
+	public int timeCnt = 0;
 	
+	boolean isKey = false;
+	
+	SnakeDTO member = new SnakeDTO();
 	Image haedImage = new Image("head.png");
 	Image tailImage = new Image("tail.png");
 	ImagePattern haedImgPtn = new ImagePattern(haedImage);	
@@ -110,60 +120,44 @@ public class ViewController implements Initializable {
 		gamePanel.setFocusTraversable(true);
 		gamePanel.requestFocus();
 		gamePanel.setOnKeyPressed(event->{
-			if(event.getCode() == KeyCode.UP){
-				game_ctr.changeDirection(Direction.UP);
-				event.consume();
+			if(isKey){
+				if(event.getCode() == KeyCode.UP){
+					game_ctr.changeDirection(Direction.UP);
+					event.consume();
+				}
+				if(event.getCode() == KeyCode.RIGHT){
+					game_ctr.changeDirection(Direction.RIGHT);
+					event.consume();
+				}
+				if(event.getCode() == KeyCode.LEFT){
+					game_ctr.changeDirection(Direction.LEFT);
+					event.consume();
+				}
+				if(event.getCode() == KeyCode.DOWN){
+					game_ctr.changeDirection(Direction.DOWN);
+					event.consume();
+				}
+				if(event.getCode() == KeyCode.ENTER){
+					game_ctr.gameStart();
+				}
+				if(event.getCode() == KeyCode.SPACE){
+					runThread.setRate(levelCnt+2);
+				}
+				if(event.getCode() == KeyCode.P){
+					gamePauseView();
+				}
 			}
-			if(event.getCode() == KeyCode.RIGHT){
-				game_ctr.changeDirection(Direction.RIGHT);
-				event.consume();
-			}
-			if(event.getCode() == KeyCode.LEFT){
-				game_ctr.changeDirection(Direction.LEFT);
-				event.consume();
-			}
-			if(event.getCode() == KeyCode.DOWN){
-				game_ctr.changeDirection(Direction.DOWN);
-				event.consume();
-			}
-			if(event.getCode() == KeyCode.ENTER){
-				game_ctr.gameStart();
-			}
+		});
+		gamePanel.setOnKeyReleased(event->{
 			if(event.getCode() == KeyCode.SPACE){
-//				runThread.setRate(2.5);
-//				levelCnt++;
-//				levelSpeed = levelSpeed + 0.15;
-//				runThread.setRate(levelSpeed);
-//				levelLabel.setText(Integer.toString(levelCnt));
-				//timeline.setDelay(Duration.millis(1000));
-			}
-			if(event.getCode() == KeyCode.P){
-				gamePauseView();
+				runThread.setRate(levelCnt);
 			}
 		});
-//		gamePanel.setOnKeyReleased(event->{
-//			if(event.getCode() == KeyCode.SPACE){
-//				runThread.setRate(1.0);
-//			}
-//		});
-		loginLabel.setOnMouseClicked(event->{
-			game_ctr.checkLogin(loginIdText.getText(), loginPwText.getText());
-		});
-		joinLabel.setOnMouseClicked(event->{
-			game_ctr.checkJoin();
-		});
+		loginLabel.setOnMouseClicked(event->{	game_ctr.checkLogin(loginIdText.getText(), loginPwText.getText());	});
+		joinLabel.setOnMouseClicked(event->{	loginPanel.setVisible(false);	joinPanel.setVisible(true);	loginAlert.setText(null);		});
+		yesLabel.setOnMouseClicked(event->{	game_ctr.checkJoin(joinIdText.getText(), joinPwText.getText(),  joinPwCheckText.getText());	});
+		noLabel.setOnMouseClicked(event->{	loginPanel.setVisible(true);	joinPanel.setVisible(false);	});
 	}
-	
-	//0.1 -> 10때 2.0 
-	//0.15 -> 10때 2.5
-	//0.2 -> 10때 3.0
-	
-	//레벨1일때 -> 1  -> 2레벨 도달조건
-	//레벨2일때 -> 2  -> 3레벨 도달조건
-	
-	
-
-	
 	
 	public void repaintSnake(LinkedList<Point> snake, LinkedList<Paint> bodyList, Point head, Point tail, Point food){
 		for(int i=0; i<HEGHT; i++){
@@ -175,19 +169,15 @@ public class ViewController implements Initializable {
 			}
 		}
 		
-		//for(int i=snake.size()-1; i>=0; i--){
 		for(int i=0; i<snake.size(); i++){
 			int y = snake.get(i).getY();
 			int x = snake.get(i).getX();			
-			//if((head.getY()==y) && (head.getX()==x))
 			if(i==snake.size()-1)
 				repaintHead(y, x);
-			//else if((tail.getY()==y) && (tail.getX()==x))
 			else if(i==0)
 				repaintTail(y, x, snake);
 			else {
 				rectFill(snakeRects[y][x], bodyList.get(bodyList.size()-1-i));
-				//rectFill(snakeRects[y][x], colorlist.get(i-1));
 			}
 		}
 	}
@@ -271,10 +261,10 @@ public class ViewController implements Initializable {
 	}
 	
 	public void gameOverView(){
+		isKey = false;
 		runThread.stop();
 		timeThread.stop();
 		overPanel.setVisible(true);
-		System.out.println("게임오버");
 	}
 	
 	public void gamePauseView(){
@@ -327,6 +317,27 @@ public class ViewController implements Initializable {
 		levelLabel.setText(Integer.toString(levelCnt));
 		levelSpeed = levelSpeed + 0.15;
 		runThread.setRate(levelSpeed);
+	}
+	
+	public void loginView(String status){
+		if(status.equals("loginok")){
+			isKey = true;
+			loginPanel.setVisible(false);
+			highScoreLabel.setText(Integer.toString(member.getT_score()));
+			idLabel.setText(member.getId());			
+		}		
+		else if(status.equals("loginno"))
+			loginAlert.setText("Login Failed");
+	}
+	
+	public void joinView(String status){
+		if(status.equals("joinok")){
+			joinPanel.setVisible(false);
+			loginPanel.setVisible(true);
+			loginAlert.setText("Join Success");
+		}else if(status.equals("joinno")){
+			joinAlert.setText("Join Failed");
+		}
 	}
 	
 // 	키바꾸는 로직

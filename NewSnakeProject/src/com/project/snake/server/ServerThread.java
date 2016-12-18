@@ -28,13 +28,19 @@ public class ServerThread extends Thread{
 	@Override
 	public void run() {
 		try {
-			while(true){
+			while(clientSocket!=null){
 				SnakeDTO data = (SnakeDTO)ois.readObject();
 				
 				switch(data.getStatus()){
-					case "login": login(); break;
-					case "join": break;
-					case "scoreupdate": break;
+					case "login": 
+							data = dao.getMember(data.getId(), data.getPassword());
+							break;
+					case "join":
+							data = dao.insertMember(data.getId(), data.getPassword());
+							break;
+					case "update": 
+							data = dao.updateInfo(data.getId(), data.getT_score(), data.getT_food(), data.getT_level(), data.getT_time());
+							break;
 				}
 				
 				oos.writeObject(data);
@@ -51,8 +57,4 @@ public class ServerThread extends Thread{
 			}
 		}
 	}
-	
-	private void login(){
-	}
-
 }
