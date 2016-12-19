@@ -86,27 +86,31 @@ public class GameController {
 	public void checkLogin(String id, String password){
 		SnakeDTO data = new SnakeDTO("login", id, password, 0, 0, 0, 0);
 		data = network.sendData(data);
-		System.out.println(data.getStatus());
-		if(data.getStatus().equals("loginok")){				//로그인 성공시에만 데이터 저장
-			view_ctr.member.setId(data.getId());
-			view_ctr.member.setPassword(data.getPassword());
-			view_ctr.member.setT_food(data.getT_food());
-			view_ctr.member.setT_score(data.getT_score());
-			view_ctr.member.setT_level(data.getT_level());
-			view_ctr.member.setT_time(data.getT_time());
-		}		
-		view_ctr.loginView(data.getStatus());
+		if(data!=null){
+			if(data.getStatus().equals("loginok")){				//로그인 성공시에만 데이터 저장
+				view_ctr.member.setId(data.getId());
+				view_ctr.member.setPassword(data.getPassword());
+				view_ctr.member.setT_food(data.getT_food());
+				view_ctr.member.setT_score(data.getT_score());
+				view_ctr.member.setT_level(data.getT_level());
+				view_ctr.member.setT_time(data.getT_time());
+				view_ctr.joinView(data.getStatus());
+				return;
+			}
+		}			
+		view_ctr.loginView("loginno");
 	}
 	
 	public void checkJoin(String id, String password, String checkPassword){
 		if(password.equals(checkPassword)){
 			SnakeDTO data = new SnakeDTO("join", id, password, 0, 0, 0, 0);
 			data = network.sendData(data);
-			System.out.println(data.getStatus());
-			view_ctr.joinView(data.getStatus());
-		}else{
-			view_ctr.joinView("joinno");
+			if(data!=null){
+				view_ctr.joinView(data.getStatus());
+				return;
+			}			
 		}
+		view_ctr.joinView("joinno");
 	}
 	
 	public void checkUpdate(String id, int t_score, int t_food, int t_level, int t_time){
@@ -117,8 +121,11 @@ public class GameController {
 		
 		SnakeDTO data = new SnakeDTO("update", id, null, t_score, t_food, t_level, t_time);
 		data = network.sendData(data);
-		
-		System.out.println(data.getStatus());
+		if(data!=null){
+			System.out.println("update success");
+			return;
+		}		
+		System.out.println("update fail");
 	}
 	
 }

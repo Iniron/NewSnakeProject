@@ -18,7 +18,7 @@ public class SnakeGameServer {
 			serverAdd = new InetSocketAddress("127.0.0.1", 8686);
 			serverSocket.bind(serverAdd);
 			
-			// 클라이언트의 접속을 기다림
+			// 클라이언트의 접속 대기
 			while(true){
 				clientSocket = serverSocket.accept();
 				ServerThread serverThread = new ServerThread(clientSocket);

@@ -154,9 +154,9 @@ public class ViewController implements Initializable {
 			}
 		});
 		loginLabel.setOnMouseClicked(event->{	game_ctr.checkLogin(loginIdText.getText(), loginPwText.getText());	});
-		joinLabel.setOnMouseClicked(event->{	loginPanel.setVisible(false);	joinPanel.setVisible(true);	loginAlert.setText(null);		});
+		joinLabel.setOnMouseClicked(event->{	loginPanel.setVisible(false);	joinPanel.setVisible(true);	loginAlert.setText(null);	});
 		yesLabel.setOnMouseClicked(event->{	game_ctr.checkJoin(joinIdText.getText(), joinPwText.getText(),  joinPwCheckText.getText());	});
-		noLabel.setOnMouseClicked(event->{	loginPanel.setVisible(true);	joinPanel.setVisible(false);	});
+		noLabel.setOnMouseClicked(event->{	loginPanel.setVisible(true);	joinPanel.setVisible(false);	joinAlert.setText(null);	});
 	}
 	
 	public void repaintSnake(LinkedList<Point> snake, LinkedList<Paint> bodyList, Point head, Point tail, Point food){

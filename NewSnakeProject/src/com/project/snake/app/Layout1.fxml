@@ -120,6 +120,23 @@
 	<HBox styleClass="root" fx:id="overPanel" alignment="CENTER" opacity="0.9">
 		<VBox alignment="CENTER" spacing="20">
 			<Label styleClass="overLabel" text="Game Over"/>
+			<VBox styleClass="overScore" alignment="CENTER">
+				<padding><Insets top="25" bottom="25" right="30" left="30"/></padding>
+				<GridPane vgap="2">
+					<Label styleClass="bonusLabel" prefWidth="150" text="ScorE:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+					<Label styleClass="bonusLabel" prefWidth="150" fx:id="overScoreLabel" text="0" GridPane.columnIndex="1" 
+										GridPane.rowIndex="0" alignment="CENTER_RIGHT"/>
+					<Label styleClass="scoreLabel" prefWidth="150" text="FooD:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+					<Label styleClass="scoreLabel" prefWidth="150" fx:id="overFoodLabel" text="0" GridPane.columnIndex="1"
+										GridPane.rowIndex="1" alignment="CENTER_RIGHT"/>
+					<Label styleClass="scoreLabel" prefWidth="150" text="LeveL:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+					<Label styleClass="scoreLabel" prefWidth="150" fx:id="overLevelLabel" text="0" GridPane.columnIndex="1" 
+										GridPane.rowIndex="2" alignment="CENTER_RIGHT"/>
+					<Label styleClass="timeLabel" prefWidth="150" text="TimE:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+					<Label styleClass="timeLabel" prefWidth="150" fx:id="overTimeLabel" text="0" GridPane.columnIndex="1"
+										GridPane.rowIndex="3" alignment="CENTER_RIGHT"/>
+				</GridPane>
+			</VBox>
 			<VBox alignment="CENTER">
 				<Label styleClass="pauseLabel" text="·Restart"/>
 				<Label styleClass="pauseLabel" text="·Quit"/>

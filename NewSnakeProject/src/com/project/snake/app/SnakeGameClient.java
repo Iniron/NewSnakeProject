@@ -27,23 +27,22 @@ public class SnakeGameClient {
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 		} catch (Exception e) {
-			System.out.println("Invalid Server");
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("fail to connect server");
 		}		
 	}	
 	
 	public SnakeDTO sendData(SnakeDTO sendData){
+		SnakeDTO recvData = null;
 		try {
 			//oos.reset();
 			oos.writeObject(sendData);
-			oos.flush();
-			
-			SnakeDTO recvData = (SnakeDTO)ois.readObject();
-			return recvData;
-			
+			oos.flush();	
+			recvData = (SnakeDTO)ois.readObject();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}		
+			//e.printStackTrace();
+			System.out.println("fail to send data");
+		}
+		return recvData;
 	}
 }

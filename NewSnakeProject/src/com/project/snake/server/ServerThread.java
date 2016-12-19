@@ -28,9 +28,10 @@ public class ServerThread extends Thread{
 	@Override
 	public void run() {
 		try {
-			while(clientSocket!=null){
+			while(true){
 				SnakeDTO data = (SnakeDTO)ois.readObject();
 				
+				System.out.println("in");
 				switch(data.getStatus()){
 					case "login": 
 							data = dao.getMember(data.getId(), data.getPassword());
@@ -47,7 +48,8 @@ public class ServerThread extends Thread{
 				oos.flush();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println(clientSocket.getInetAddress()+":disconnect");
 		} finally {
 			try {
 				if(ois!=null) ois.close();

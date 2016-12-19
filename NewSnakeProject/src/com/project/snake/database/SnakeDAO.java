@@ -46,7 +46,8 @@ public class SnakeDAO {
 				data.setStatus("loginno");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			data.setStatus("loginno");
 		} finally {
 			try {
 				if(preparedStatement!=null) preparedStatement.close();
@@ -69,11 +70,12 @@ public class SnakeDAO {
 			preparedStatement.setString(2, password);
 			data = new SnakeDTO();
 			
-			if(preparedStatement.executeUpdate()==1)	data.setStatus("joinok");
-			else										data.setStatus("joinno");
+			preparedStatement.executeUpdate();	
+			data.setStatus("joinok");
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			data.setStatus("joinno");
 		} finally {
 			try {
 				if(preparedStatement!=null) preparedStatement.close();
@@ -98,11 +100,12 @@ public class SnakeDAO {
 			preparedStatement.setString(5, id);
 			data = new SnakeDTO();
 			
-			if(preparedStatement.executeUpdate()==1)	data.setStatus("updateok");
-			else										data.setStatus("updateno");
+			preparedStatement.executeUpdate();
+			data.setStatus("updateok");
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			data.setStatus("updateno");
 		} finally {
 			try {
 				if(preparedStatement!=null) preparedStatement.close();
