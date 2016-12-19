@@ -1,7 +1,5 @@
 package com.project.snake.app;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
@@ -22,7 +20,7 @@ public class SnakeGameClient {
 		this.game_ctr = game_ctr;
 		try {
 			clientSocket = new Socket();
-			InetSocketAddress serverAdd = new InetSocketAddress("127.0.0.1", 8686);
+			InetSocketAddress serverAdd = new InetSocketAddress("192.168.20.40", 8686);
 			clientSocket.connect(serverAdd);
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
 			ois = new ObjectInputStream(clientSocket.getInputStream());

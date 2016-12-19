@@ -31,7 +31,6 @@ public class ServerThread extends Thread{
 			while(true){
 				SnakeDTO data = (SnakeDTO)ois.readObject();
 				
-				System.out.println("in");
 				switch(data.getStatus()){
 					case "login": 
 							data = dao.getMember(data.getId(), data.getPassword());

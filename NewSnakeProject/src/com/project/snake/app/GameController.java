@@ -86,6 +86,7 @@ public class GameController {
 	public void checkLogin(String id, String password){
 		SnakeDTO data = new SnakeDTO("login", id, password, 0, 0, 0, 0);
 		data = network.sendData(data);
+		System.out.println(data.getStatus());
 		if(data!=null){
 			if(data.getStatus().equals("loginok")){				//로그인 성공시에만 데이터 저장
 				view_ctr.member.setId(data.getId());
@@ -94,7 +95,7 @@ public class GameController {
 				view_ctr.member.setT_score(data.getT_score());
 				view_ctr.member.setT_level(data.getT_level());
 				view_ctr.member.setT_time(data.getT_time());
-				view_ctr.joinView(data.getStatus());
+				view_ctr.loginView(data.getStatus());
 				return;
 			}
 		}			
@@ -105,6 +106,7 @@ public class GameController {
 		if(password.equals(checkPassword)){
 			SnakeDTO data = new SnakeDTO("join", id, password, 0, 0, 0, 0);
 			data = network.sendData(data);
+			System.out.println(data.getStatus());
 			if(data!=null){
 				view_ctr.joinView(data.getStatus());
 				return;
