@@ -69,12 +69,10 @@ public class ViewController implements Initializable {
 	private Label scoreLabel;
 	@FXML
 	private Label bonusLabel;
-	
 	@FXML
 	private Label pauseLabel;
 	@FXML
 	private Label quitLabel;
-	
 	@FXML
 	private Label foodLabel;
 	@FXML
@@ -129,7 +127,7 @@ public class ViewController implements Initializable {
 	
 	SnakeDTO member = new SnakeDTO();
 	Image haedImage = new Image("head.png");
-	Image tailImage = new Image("tail.png");
+	Image tailImage = new Image("bomb_red.png");
 	ImagePattern haedImgPtn = new ImagePattern(haedImage);	
 	ImagePattern tailImgPtn = new ImagePattern(tailImage);
 		
@@ -320,8 +318,8 @@ public class ViewController implements Initializable {
 	}
 	
 	public void gamePauseView(){
-		if(pausePanel.isVisible()) 	pausePanel.setVisible(false);
-		else						pausePanel.setVisible(true);
+//		if(pausePanel.isVisible()) 	pausePanel.setVisible(false);
+//		else						pausePanel.setVisible(true);
 
 		if(runThread.getStatus()==Status.RUNNING){
 			runThread.pause();
@@ -347,7 +345,8 @@ public class ViewController implements Initializable {
 		int sec = (timeCnt / 10) % 60;
 		int min = (timeCnt / 10 / 60) % 60;
 		String DurationTime = String.format("%02d:%02d", min, sec);
-		
+		//3초 지나면 메소드 is적 키고
+		//10초 지우고
 		scoreLabel.setText(Integer.toString(scoreCnt));
 		foodLabel.setText(Integer.toString(foodCnt));
 		bonusLabel.setText(Integer.toString(bonusCnt));
