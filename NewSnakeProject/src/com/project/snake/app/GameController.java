@@ -4,6 +4,7 @@ import java.net.Socket;
 
 import com.project.snake.database.SnakeDTO;
 
+import javafx.animation.Animation.Status;
 import javafx.scene.paint.Color;
 
 public class GameController {
@@ -25,6 +26,38 @@ public class GameController {
 		snake_ctr.foodCreate();
 		view_ctr.startView(snake_ctr.head, snake_ctr.tail, snake_ctr.food);
 		view_ctr.setTimer();
+	}
+	
+	public void restart(){
+		snake_ctr.snake.clear();
+		snake_ctr.bodyList.clear();
+
+		SnakeDTO data = new SnakeDTO("refresh", view_ctr.member.getId(), null, 0, 0, 0, 0);
+		//System.out.println(data.getStatus());
+		data = network.sendData(data);
+		if(data!=null){
+			if(data.getStatus().equals("refreshok")){
+				view_ctr.member.setT_score(data.getT_score());
+				view_ctr.member.setT_food(data.getT_food());
+				view_ctr.member.setT_level(data.getT_level());
+				view_ctr.member.setT_time(data.getT_time());
+			}
+		}
+		view_ctr.refreshSnakePanel();
+		view_ctr.refreshSidePanel();
+	}
+	
+	public void quitGame(){
+		view_ctr.isKey = false;
+		if(view_ctr.runThread.getStatus().equals(Status.RUNNING))	view_ctr.runThread.stop();
+		if(view_ctr.timeThread.getStatus().equals(Status.RUNNING))	view_ctr.timeThread.stop();
+		
+		snake_ctr.snake.clear();
+		snake_ctr.bodyList.clear();
+		SnakeDTO data = new SnakeDTO(null, null, null, 0, 0, 0, 0);
+		view_ctr.member = data;
+		view_ctr.refreshSnakePanel();
+		view_ctr.refreshSidePanel();
 	}
 	
 	public void gameOver(){
@@ -86,7 +119,7 @@ public class GameController {
 	public void checkLogin(String id, String password){
 		SnakeDTO data = new SnakeDTO("login", id, password, 0, 0, 0, 0);
 		data = network.sendData(data);
-		System.out.println(data.getStatus());
+		//System.out.println(data.getStatus());
 		if(data!=null){
 			if(data.getStatus().equals("loginok")){				//로그인 성공시에만 데이터 저장
 				view_ctr.member.setId(data.getId());
@@ -106,7 +139,7 @@ public class GameController {
 		if(password.equals(checkPassword)){
 			SnakeDTO data = new SnakeDTO("join", id, password, 0, 0, 0, 0);
 			data = network.sendData(data);
-			System.out.println(data.getStatus());
+			//System.out.println(data.getStatus());
 			if(data!=null){
 				view_ctr.joinView(data.getStatus());
 				return;
@@ -123,6 +156,7 @@ public class GameController {
 		
 		SnakeDTO data = new SnakeDTO("update", id, null, t_score, t_food, t_level, t_time);
 		data = network.sendData(data);
+		//System.out.println(data.getStatus());
 		if(data!=null){
 			System.out.println("update success");
 			return;

@@ -45,6 +45,8 @@ public class ViewController implements Initializable {
 	private HBox pausePanel;
 	@FXML
 	private HBox overPanel;
+	@FXML
+	private HBox startPanel;
 	
 	//---------- TextField ----------
 	@FXML
@@ -67,6 +69,12 @@ public class ViewController implements Initializable {
 	private Label scoreLabel;
 	@FXML
 	private Label bonusLabel;
+	
+	@FXML
+	private Label pauseLabel;
+	@FXML
+	private Label quitLabel;
+	
 	@FXML
 	private Label foodLabel;
 	@FXML
@@ -84,7 +92,21 @@ public class ViewController implements Initializable {
 	@FXML
 	private Label noLabel;
 	@FXML
-	private Label joinAlert;	
+	private Label joinAlert;
+	@FXML
+	private Label overScoreLabel;
+	@FXML
+	private Label overFoodLabel;
+	@FXML
+	private Label overLevelLabel;
+	@FXML
+	private Label overTimeLabel;
+	@FXML
+	private Label overRestartLabel;
+	@FXML
+	private Label overQuitLabel;
+	@FXML
+	private Label pauseResumeLabel;	
 
 	GameController game_ctr;
 	Stage primaryStage;
@@ -93,15 +115,15 @@ public class ViewController implements Initializable {
 	
 	Timeline runThread;
 	Timeline timeThread;
-	int runSpeed = 100;
-	int timeSpeed = 100;
-	double levelSpeed = 1.0;
+	int runSpeed;
+	int timeSpeed;
+	double levelSpeed;
 	
-	public int bonusCnt = 100;
-	public int foodCnt = 0;
-	public int scoreCnt = 0;
-	public int levelCnt = 1;
-	public int timeCnt = 0;
+	public int bonusCnt;
+	public int foodCnt;
+	public int scoreCnt;
+	public int levelCnt;
+	public int timeCnt;
 	
 	boolean isKey = false;
 	
@@ -139,6 +161,7 @@ public class ViewController implements Initializable {
 				}
 				if(event.getCode() == KeyCode.ENTER){
 					game_ctr.gameStart();
+					startPanel.setVisible(false);
 				}
 				if(event.getCode() == KeyCode.SPACE){
 					runThread.setRate(levelCnt+2);
@@ -153,10 +176,18 @@ public class ViewController implements Initializable {
 				runThread.setRate(levelCnt);
 			}
 		});
+		pauseLabel.setOnMouseClicked(event->{	gamePauseView(); });
+		quitLabel.setOnMouseClicked(event->{ overPanel.setVisible(false); loginPanel.setVisible(true); game_ctr.quitGame();	isKey=false;	});
+		
 		loginLabel.setOnMouseClicked(event->{	game_ctr.checkLogin(loginIdText.getText(), loginPwText.getText());	});
 		joinLabel.setOnMouseClicked(event->{	loginPanel.setVisible(false);	joinPanel.setVisible(true);	loginAlert.setText(null);	});
 		yesLabel.setOnMouseClicked(event->{	game_ctr.checkJoin(joinIdText.getText(), joinPwText.getText(),  joinPwCheckText.getText());	});
 		noLabel.setOnMouseClicked(event->{	loginPanel.setVisible(true);	joinPanel.setVisible(false);	joinAlert.setText(null);	});
+		
+		overRestartLabel.setOnMouseClicked(event->{	overPanel.setVisible(false); startPanel.setVisible(true); game_ctr.restart(); isKey = true; });
+		overQuitLabel.setOnMouseClicked(event->{ overPanel.setVisible(false); loginPanel.setVisible(true); game_ctr.quitGame();	isKey=false;	});
+		
+		pauseResumeLabel.setOnMouseClicked(event->{	gamePauseView(); });
 	}
 	
 	public void repaintSnake(LinkedList<Point> snake, LinkedList<Paint> bodyList, Point head, Point tail, Point food){
@@ -168,7 +199,6 @@ public class ViewController implements Initializable {
 				}
 			}
 		}
-		
 		for(int i=0; i<snake.size(); i++){
 			int y = snake.get(i).getY();
 			int x = snake.get(i).getX();			
@@ -201,12 +231,21 @@ public class ViewController implements Initializable {
 		else				 snakeRects[y][x].setRotate(0);
 	}
 	
+	public void refreshSnakePanel(){
+		for(int i=0; i<HEGHT; i++){
+			for(int j=0; j<WIDTH; j++){
+				snakeRects[i][j].setFill(Color.TRANSPARENT);
+			}
+		}
+	}
+	
 	public void initGameView(){
 		
 		//loginPanel.setVisible(false);
 		joinPanel.setVisible(false);
 		overPanel.setVisible(false);
 		pausePanel.setVisible(false);
+		startPanel.setVisible(false);
 		
 		Rectangle rect;
 		gameRects = new Rectangle[HEGHT][WIDTH];
@@ -235,7 +274,7 @@ public class ViewController implements Initializable {
 	}
 	
 	public void startView(Point head, Point tail, Point food){
-				
+
 		loginPanel.setVisible(false);
 		
 		int y = head.getY();							
@@ -246,14 +285,19 @@ public class ViewController implements Initializable {
 		snakeRects[y][x].setFill(tailImgPtn); 	//좌표에 꼬리를 위치한다.
 		
 		//---------------------------------
-		//각종 초기화 코드들
+		//각종 초기화 변수들
 		scoreCnt = 0;
-		bonusCnt = 101;
+		bonusCnt = 100;
 		foodCnt = 0;
 		levelCnt = 1;
+		timeCnt = 0;
+		
+		runSpeed = 100;
+		timeSpeed = 100;
+		levelSpeed = 1.0;
 		//---------------------------------
-				
-		if(runThread==null){
+		
+		if(runThread==null || runThread.getStatus().equals(Status.STOPPED)){
 			runThread = new Timeline(new KeyFrame(Duration.millis(runSpeed), event -> game_ctr.changeSnake()));
 			runThread.setCycleCount(Timeline.INDEFINITE);
 			runThread.play();
@@ -265,6 +309,14 @@ public class ViewController implements Initializable {
 		runThread.stop();
 		timeThread.stop();
 		overPanel.setVisible(true);
+		
+		overScoreLabel.setText(Integer.toString(scoreCnt));
+		overFoodLabel.setText(Integer.toString(foodCnt));
+		overLevelLabel.setText(Integer.toString(levelCnt));
+		int sec = (timeCnt / 10) % 60;
+		int min = (timeCnt / 10 / 60) % 60;
+		String DurationTime = String.format("%02d:%02d", min, sec);
+		overTimeLabel.setText(DurationTime);
 	}
 	
 	public void gamePauseView(){
@@ -303,13 +355,13 @@ public class ViewController implements Initializable {
 	}
 	
 	public void setTimer(){
-		 if (timeThread == null) {
-			 timeThread = new Timeline();
-	         KeyFrame k = new KeyFrame(Duration.millis(timeSpeed), event -> updateSidePanel());
-	         timeThread.getKeyFrames().add(k);
-	         timeThread.setCycleCount(Timeline.INDEFINITE);
-	         timeThread.play();
-	      }
+		if (timeThread == null || timeThread.getStatus().equals(Status.STOPPED)) {
+			timeThread = new Timeline();
+			KeyFrame k = new KeyFrame(Duration.millis(timeSpeed), event -> updateSidePanel());
+			timeThread.getKeyFrames().add(k);
+			timeThread.setCycleCount(Timeline.INDEFINITE);
+			timeThread.play();
+		}
 	}
 	
 	public void levelUp(){
@@ -323,8 +375,8 @@ public class ViewController implements Initializable {
 		if(status.equals("loginok")){
 			isKey = true;
 			loginPanel.setVisible(false);
-			highScoreLabel.setText(Integer.toString(member.getT_score()));
-			idLabel.setText(member.getId());			
+			startPanel.setVisible(true);
+			refreshSidePanel();
 		}		
 		else if(status.equals("loginno"))
 			loginAlert.setText("Login Failed");
@@ -340,6 +392,18 @@ public class ViewController implements Initializable {
 		}
 	}
 	
+	public void quitView(String status){
+		refreshSidePanel();
+	}
+	
+	public void refreshSidePanel(){
+		highScoreLabel.setText(Integer.toString(member.getT_score()));
+		idLabel.setText(member.getId());
+		scoreLabel.setText("0");
+		foodLabel.setText("0");
+		bonusLabel.setText("100");
+		timeLabel.setText("00:00");
+	}
 // 	키바꾸는 로직
 //	if(event.getCode() == KeyCode.T){
 //		turnKey();

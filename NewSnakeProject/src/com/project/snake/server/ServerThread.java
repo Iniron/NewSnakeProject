@@ -33,13 +33,16 @@ public class ServerThread extends Thread{
 				
 				switch(data.getStatus()){
 					case "login": 
-							data = dao.getMember(data.getId(), data.getPassword());
+							data = dao.userCheck(data.getId(), data.getPassword());
 							break;
 					case "join":
 							data = dao.insertMember(data.getId(), data.getPassword());
 							break;
 					case "update": 
 							data = dao.updateInfo(data.getId(), data.getT_score(), data.getT_food(), data.getT_level(), data.getT_time());
+							break;
+					case "refresh": 
+							data = dao.getMember(data.getId());
 							break;
 				}
 				

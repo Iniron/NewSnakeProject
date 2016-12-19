@@ -21,7 +21,7 @@ public class SnakeDAO {
 		}	
 	}
 	
-	public SnakeDTO getMember(String id, String password){
+	public SnakeDTO userCheck(String id, String password){
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;;
 		SnakeDTO data = null;
@@ -48,6 +48,42 @@ public class SnakeDAO {
 		} catch (Exception e) {
 			//e.printStackTrace();
 			data.setStatus("loginno");
+		} finally {
+			try {
+				if(preparedStatement!=null) preparedStatement.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return data;
+	}
+	
+	public SnakeDTO getMember(String id){
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;;
+		SnakeDTO data = null;
+		String sql = "select * from snake_members where id = ?";
+		
+		try {
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, id);
+			resultSet = preparedStatement.executeQuery();
+			data = new SnakeDTO();
+			
+			if(resultSet.next()){
+				data.setStatus("refreshok");
+				data.setId(resultSet.getString("id"));
+				data.setPassword(resultSet.getString("password"));
+				data.setT_score(resultSet.getInt("t_score"));
+				data.setT_food(resultSet.getInt("t_food"));
+				data.setT_level(resultSet.getInt("t_level"));				
+				data.setT_time(resultSet.getInt("t_time"));
+			}else{
+				data.setStatus("refreshno");
+			}
+		} catch (Exception e) {
+			//e.printStackTrace();
+			data.setStatus("refreshno");
 		} finally {
 			try {
 				if(preparedStatement!=null) preparedStatement.close();

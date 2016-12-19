@@ -21,6 +21,11 @@
 		<StackPane>
 			<GridPane fx:id="gamePanel" vgap="1" hgap="1"/>
 			<GridPane fx:id="snakePanel" vgap="1" hgap="1" layoutX="40" layoutY="40"/>
+			<HBox styleClass="root" fx:id="startPanel" alignment="CENTER" opacity="0.6">
+				<VBox alignment="CENTER">
+					<Label styleClass="overLabel" text="Press Enter to Start"/>			
+				</VBox>
+			</HBox>
 		</StackPane>
 	
 	<!-- ==================== Side Panel ==================== -->
@@ -35,7 +40,7 @@
 				<HBox alignment="CENTER">
 					<padding><Insets top="10"/></padding>
 					<Label  styleClass="idLabel" text="ID:" textAlignment="CENTER"/>
-					<Label styleClass="idLabel" fx:id="idLabel" text="SNAKE" textAlignment="CENTER"/>			
+					<Label styleClass="idLabel" fx:id="idLabel" text="" textAlignment="CENTER"/>			
 				</HBox>
 			</VBox>
 			<VBox styleClass="topInfo" prefWidth="300" spacing="20">
@@ -112,8 +117,13 @@
 	</HBox>	
 	<!-- ==================== pause Panel ==================== -->
 	<HBox styleClass="root" fx:id="pausePanel" alignment="CENTER" opacity="0.9">
-		<VBox alignment="CENTER">
-			<Label styleClass="overLabel" text="Game Pause"/>			
+		<VBox alignment="CENTER" spacing="20">
+			<VBox alignment="CENTER">
+				<Label styleClass="overLabel" text="Game Pause"/>			
+			</VBox>
+			<VBox alignment="CENTER">
+				<Label styleClass="pauseLabel" fx:id="pauseResumeLabel" text="·Resume"/>
+			</VBox>
 		</VBox>
 	</HBox>
 	<!-- ==================== over Panel ==================== -->
@@ -138,8 +148,8 @@
 				</GridPane>
 			</VBox>
 			<VBox alignment="CENTER">
-				<Label styleClass="pauseLabel" text="·Restart"/>
-				<Label styleClass="pauseLabel" text="·Quit"/>
+				<Label styleClass="pauseLabel" fx:id="overRestartLabel" text="·Restart"/>
+				<Label styleClass="pauseLabel" fx:id="overQuitLabel" text="·Quit"/>
 			</VBox>
 		</VBox>
 	</HBox>
