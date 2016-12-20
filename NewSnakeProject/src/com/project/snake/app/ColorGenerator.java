@@ -14,10 +14,10 @@ public class ColorGenerator {
 	}
 	
 	public void ColorCreate(){
-		colorList.add(Color.web("#f2b233"));	//주황
+		colorList.add(Color.web("#f2b233"));	//노랑
 		colorList.add(Color.web("#8342bd"));	//보라
 		colorList.add(Color.web("#e388cc"));	//분홍
-		colorList.add(Color.web("#ed6051"));	//빨강
+		colorList.add(Color.web("#ed6051"));	//주황
 		colorList.add(Color.web("#2eb094"));	//초록
 	}
 	

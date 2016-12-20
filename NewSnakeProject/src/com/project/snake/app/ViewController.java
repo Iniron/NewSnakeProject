@@ -132,12 +132,23 @@ public class ViewController implements Initializable {
 	Image haedImage = new Image("head.png");
 	Image tailImage = new Image("tail.png");
 	Image bombRImage = new Image("bomb_red.png");
-	Image bombGImage = new Image("bomb.png");
+	Image bombDImage = new Image("bomb.png");
+	Image bombYImage = new Image("bomb_yellow.png");
+	Image bombPImage = new Image("bomb_purple.png");
+	Image bombKImage = new Image("bomb_pink.png");
+	Image bombOImage = new Image("bomb_orange.png");
+	Image bombGImage = new Image("bomb_green.png");
+	
 	ImagePattern haedImgPtn = new ImagePattern(haedImage);	
 	ImagePattern tailImgPtn = new ImagePattern(tailImage);
 	ImagePattern bombRImgPtn = new ImagePattern(bombRImage);
+	ImagePattern bombDImgPtn = new ImagePattern(bombDImage);
+	ImagePattern bombYImgPtn = new ImagePattern(bombYImage);
+	ImagePattern bombPImgPtn = new ImagePattern(bombPImage);
+	ImagePattern bombKImgPtn = new ImagePattern(bombKImage);
+	ImagePattern bombOImgPtn = new ImagePattern(bombOImage);
 	ImagePattern bombGImgPtn = new ImagePattern(bombGImage);
-	ImagePattern bombColor[] = {bombRImgPtn, bombGImgPtn};
+	ImagePattern bombColor[] = {bombRImgPtn, bombDImgPtn, bombYImgPtn, bombPImgPtn, bombKImgPtn, bombOImgPtn, bombGImgPtn};
 		
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -237,7 +248,7 @@ public class ViewController implements Initializable {
 		for(int i=0; i<bombList.size(); i++){
 			int y = bombList.get(i).getY();
 			int x = bombList.get(i).getX();	
-			snakeRects[y][x].setFill(bombColor[(int)(Math.random()*2)]);
+			snakeRects[y][x].setFill(bombColor[(int)(Math.random()*bombColor.length)]);
 			snakeRects[y][x].setRotate(0);
 			snakeRects[y][x].setOpacity(0.8);
 		}

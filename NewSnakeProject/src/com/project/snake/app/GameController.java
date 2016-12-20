@@ -30,6 +30,7 @@ public class GameController {
 		view_ctr.isKey = true;
 		snake_ctr.snake.clear();
 		snake_ctr.bodyList.clear();
+		snake_ctr.bombList.clear();
 
 		SnakeDTO data = new SnakeDTO("refresh", view_ctr.member.getId(), null, 0, 0, 0, 0);
 		//System.out.println(data.getStatus());
@@ -52,9 +53,10 @@ public class GameController {
 			view_ctr.runThread.stop();
 			view_ctr.timeThread.stop();
 		}
-		
+				
 		snake_ctr.snake.clear();
 		snake_ctr.bodyList.clear();
+		snake_ctr.bombList.clear();
 		view_ctr.member = new SnakeDTO(null, null, null, 0, 0, 0, 0);
 		view_ctr.refreshSnakePanel();
 		view_ctr.refreshSidePanel();
