@@ -31,6 +31,7 @@ public class ViewController implements Initializable {
 	public static final int HEGHT = 30;
 	public static final int WIDTH = 30;
 	public static final int RECT_SIZE = 25;
+	public static boolean isBomb = false;
 	
 	//---------- Pane ----------
 	@FXML
@@ -124,12 +125,19 @@ public class ViewController implements Initializable {
 	public int timeCnt;
 	
 	boolean isKey = false;
+	boolean isStart = false;
+	boolean isDirection = false;
 	
 	SnakeDTO member = new SnakeDTO();
 	Image haedImage = new Image("head.png");
-	Image tailImage = new Image("bomb_red.png");
+	Image tailImage = new Image("tail.png");
+	Image bombRImage = new Image("bomb_red.png");
+	Image bombGImage = new Image("bomb.png");
 	ImagePattern haedImgPtn = new ImagePattern(haedImage);	
 	ImagePattern tailImgPtn = new ImagePattern(tailImage);
+	ImagePattern bombRImgPtn = new ImagePattern(bombRImage);
+	ImagePattern bombGImgPtn = new ImagePattern(bombGImage);
+	ImagePattern bombColor[] = {bombRImgPtn, bombGImgPtn};
 		
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -174,29 +182,25 @@ public class ViewController implements Initializable {
 				runThread.setRate(levelCnt);
 			}
 		});
-		pauseLabel.setOnMouseClicked(event->{	gamePauseView(); });
-		quitLabel.setOnMouseClicked(event->{ overPanel.setVisible(false); loginPanel.setVisible(true); game_ctr.quitGame();	isKey=false;	});
+		pauseLabel.setOnMouseClicked(event->{	if(isStart) gamePauseView(); });
+		quitLabel.setOnMouseClicked(event->{ startPanel.setVisible(false); overPanel.setVisible(false); loginPanel.setVisible(true); game_ctr.quitGame(); });
 		
-		loginLabel.setOnMouseClicked(event->{	game_ctr.checkLogin(loginIdText.getText(), loginPwText.getText());	});
+		loginLabel.setOnMouseClicked(event->{	loginAlert.setText(null) ;game_ctr.checkLogin(loginIdText.getText(), loginPwText.getText());	});
 		joinLabel.setOnMouseClicked(event->{	loginPanel.setVisible(false);	joinPanel.setVisible(true);	loginAlert.setText(null);	});
-		yesLabel.setOnMouseClicked(event->{	game_ctr.checkJoin(joinIdText.getText(), joinPwText.getText(),  joinPwCheckText.getText());	});
+		yesLabel.setOnMouseClicked(event->{	joinAlert.setText(null); game_ctr.checkJoin(joinIdText.getText(), joinPwText.getText(),  joinPwCheckText.getText());	});
 		noLabel.setOnMouseClicked(event->{	loginPanel.setVisible(true);	joinPanel.setVisible(false);	joinAlert.setText(null);	});
 		
-		overRestartLabel.setOnMouseClicked(event->{	overPanel.setVisible(false); startPanel.setVisible(true); game_ctr.restart(); isKey = true; });
-		overQuitLabel.setOnMouseClicked(event->{ overPanel.setVisible(false); loginPanel.setVisible(true); game_ctr.quitGame();	isKey=false;	});
+		overRestartLabel.setOnMouseClicked(event->{	overPanel.setVisible(false); startPanel.setVisible(true); game_ctr.restart(); });
+		overQuitLabel.setOnMouseClicked(event->{ overPanel.setVisible(false); loginPanel.setVisible(true); game_ctr.quitGame();	});
 		
 		pauseResumeLabel.setOnMouseClicked(event->{	gamePauseView(); });
 	}
 	
-	public void repaintSnake(LinkedList<Point> snake, LinkedList<Paint> bodyList, Point head, Point tail, Point food){
-		for(int i=0; i<HEGHT; i++){
-			for(int j=0; j<WIDTH; j++){
-				snakeRects[i][j].setFill(Color.TRANSPARENT);
-				if((food.getX()==j) && (food.getY()==i)){
-					snakeRects[i][j].setFill(bodyList.get(bodyList.size()-1));
-				}
-			}
-		}
+	public void repaintSnake(LinkedList<Point> snake, LinkedList<Paint> bodyList, LinkedList<Point> bombList, Point head, Point tail, Point food){
+		refreshSnakePanel();
+		snakeRects[food.getY()][food.getX()].setFill(bodyList.get(bodyList.size()-1));
+		if(isBomb) repaintBomb(bombList);
+		
 		for(int i=0; i<snake.size(); i++){
 			int y = snake.get(i).getY();
 			int x = snake.get(i).getX();			
@@ -227,6 +231,16 @@ public class ViewController implements Initializable {
 		else if(front_x < x) snakeRects[y][x].setRotate(270);
 		else if(front_y > y) snakeRects[y][x].setRotate(180);
 		else				 snakeRects[y][x].setRotate(0);
+	}
+	
+	public void repaintBomb(LinkedList<Point> bombList){
+		for(int i=0; i<bombList.size(); i++){
+			int y = bombList.get(i).getY();
+			int x = bombList.get(i).getX();	
+			snakeRects[y][x].setFill(bombColor[(int)(Math.random()*2)]);
+			snakeRects[y][x].setRotate(0);
+			snakeRects[y][x].setOpacity(0.8);
+		}
 	}
 	
 	public void refreshSnakePanel(){
@@ -274,6 +288,7 @@ public class ViewController implements Initializable {
 	public void startView(Point head, Point tail, Point food){
 
 		loginPanel.setVisible(false);
+		isStart = true;
 		
 		int y = head.getY();							
 		int x = head.getX();					//헤드를 인자로 받아 좌표검색		
@@ -304,6 +319,7 @@ public class ViewController implements Initializable {
 	
 	public void gameOverView(){
 		isKey = false;
+		isStart = false;
 		runThread.stop();
 		timeThread.stop();
 		overPanel.setVisible(true);
@@ -337,7 +353,7 @@ public class ViewController implements Initializable {
 		rect.setArcWidth(10);
 	}
 	
-	public void updateSidePanel() {
+	public void updateTrigger() {
 		if (bonusCnt > 10) {
 			bonusCnt--;
 		}
@@ -345,8 +361,13 @@ public class ViewController implements Initializable {
 		int sec = (timeCnt / 10) % 60;
 		int min = (timeCnt / 10 / 60) % 60;
 		String DurationTime = String.format("%02d:%02d", min, sec);
-		//3초 지나면 메소드 is적 키고
-		//10초 지우고
+		
+		if(timeCnt%100==0){
+			game_ctr.updateBomb(1, 10+levelCnt*5);
+		}else if(timeCnt%50==0){
+			game_ctr.updateBomb(0, 0);
+		}
+		
 		scoreLabel.setText(Integer.toString(scoreCnt));
 		foodLabel.setText(Integer.toString(foodCnt));
 		bonusLabel.setText(Integer.toString(bonusCnt));
@@ -356,7 +377,7 @@ public class ViewController implements Initializable {
 	public void setTimer(){
 		if (timeThread == null || timeThread.getStatus().equals(Status.STOPPED)) {
 			timeThread = new Timeline();
-			KeyFrame k = new KeyFrame(Duration.millis(timeSpeed), event -> updateSidePanel());
+			KeyFrame k = new KeyFrame(Duration.millis(timeSpeed), event -> updateTrigger());
 			timeThread.getKeyFrames().add(k);
 			timeThread.setCycleCount(Timeline.INDEFINITE);
 			timeThread.play();
@@ -399,8 +420,9 @@ public class ViewController implements Initializable {
 		highScoreLabel.setText(Integer.toString(member.getT_score()));
 		idLabel.setText(member.getId());
 		scoreLabel.setText("0");
-		foodLabel.setText("0");
 		bonusLabel.setText("100");
+		foodLabel.setText("0");
+		levelLabel.setText("1");
 		timeLabel.setText("00:00");
 	}
 // 	키바꾸는 로직

@@ -8,19 +8,22 @@ public class SnakeController {
 	
 	public static Direction direction;
 	
-	ColorGenerator colorGenerator; 
+	ColorGenerator colorGenerator;
+	BombGenerator bombGenerator;
 	LinkedList<Point> snake;
 	LinkedList<Paint> bodyList;
+	LinkedList<Point> bombList;
 	GameController game_ctr;
 	Point head;
 	Point tail;
-	Point food;	
+	Point food;
 	
 	public SnakeController(GameController game_ctr) {
 		this.game_ctr = game_ctr; 
 		colorGenerator = new ColorGenerator(); 
 		snake =  new LinkedList<>();
 		bodyList =  new LinkedList<>();
+		bombList = new LinkedList<>();
 		colorGenerator.ColorCreate();
 	}
 	
@@ -48,6 +51,11 @@ public class SnakeController {
 		}
 		
 		bodyList.add(colorGenerator.getRandomColor());
+	}
+	
+	public void bombCreate(int bombCnt){
+		bombGenerator = new BombGenerator(this, bombCnt);
+		bombGenerator.start();
 	}
 	
 	public void addHead(){

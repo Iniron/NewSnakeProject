@@ -15,7 +15,8 @@ public class SnakeGameServer {
 		try {
 			// 서버용 소켓 생성
 			serverSocket = new ServerSocket();
-			serverAdd = new InetSocketAddress("192.168.20.40", 8686);
+			//serverAdd = new InetSocketAddress("192.168.20.40", 8686);
+			serverAdd = new InetSocketAddress("127.0.0.1", 8686);
 			serverSocket.bind(serverAdd);
 			
 			// 클라이언트의 접속 대기

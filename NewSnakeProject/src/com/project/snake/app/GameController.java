@@ -1,10 +1,7 @@
 package com.project.snake.app;
 
-import java.net.Socket;
-
 import com.project.snake.database.SnakeDTO;
 
-import javafx.animation.Animation.Status;
 import javafx.scene.paint.Color;
 
 public class GameController {
@@ -12,13 +9,14 @@ public class GameController {
 	ViewController view_ctr;
 	SnakeController snake_ctr;
 	SnakeGameClient network;
-	Socket clientSocket;
+	boolean isDirection = false;
 	
 	public GameController(ViewController view_ctr) {
 		this.view_ctr = view_ctr;							//ViewController의 객체를 인자로 받는다.
 		snake_ctr = new SnakeController(this);				//SnakeController 객체 생성
 		network = new SnakeGameClient(this);				//서버와 연결
-		view_ctr.initGameView();					
+		view_ctr.initGameView();			
+		
 	}
 		
 	public void gameStart(){
@@ -29,6 +27,7 @@ public class GameController {
 	}
 	
 	public void restart(){
+		view_ctr.isKey = true;
 		snake_ctr.snake.clear();
 		snake_ctr.bodyList.clear();
 
@@ -49,13 +48,14 @@ public class GameController {
 	
 	public void quitGame(){
 		view_ctr.isKey = false;
-		if(view_ctr.runThread.getStatus().equals(Status.RUNNING))	view_ctr.runThread.stop();
-		if(view_ctr.timeThread.getStatus().equals(Status.RUNNING))	view_ctr.timeThread.stop();
+		if(view_ctr.isStart){
+			view_ctr.runThread.stop();
+			view_ctr.timeThread.stop();
+		}
 		
 		snake_ctr.snake.clear();
 		snake_ctr.bodyList.clear();
-		SnakeDTO data = new SnakeDTO(null, null, null, 0, 0, 0, 0);
-		view_ctr.member = data;
+		view_ctr.member = new SnakeDTO(null, null, null, 0, 0, 0, 0);
 		view_ctr.refreshSnakePanel();
 		view_ctr.refreshSidePanel();
 	}
@@ -66,6 +66,7 @@ public class GameController {
 	}
 	
 	public void changeDirection(Direction direction){
+		if(isDirection) return;
 		switch (direction) {
 			case UP: if(SnakeController.direction==Direction.DOWN) return; else break;
 			case RIGHT: if(SnakeController.direction==Direction.LEFT) return; else break;
@@ -73,16 +74,18 @@ public class GameController {
 			case DOWN: if(SnakeController.direction==Direction.UP) return; else break;
 		}
 		SnakeController.direction = direction;
+		isDirection = true;
 	}
 	
 	public void changeSnake(){
+		isDirection = false;
 		switch(SnakeController.direction){
 			case UP: 	checkCrash(-1, 0);	break;
 			case RIGHT: checkCrash(0, 1); 	break;
 			case LEFT: 	checkCrash(0, -1);	break;
 			case DOWN: 	checkCrash(1, 0);	break;
 		}
-		view_ctr.repaintSnake(snake_ctr.snake, snake_ctr.bodyList, snake_ctr.head, snake_ctr.tail, snake_ctr.food);
+		view_ctr.repaintSnake(snake_ctr.snake, snake_ctr.bodyList, snake_ctr.bombList, snake_ctr.head, snake_ctr.tail, snake_ctr.food);
 	}
 	
 	public void checkCrash(int off_y, int off_x){
@@ -162,6 +165,14 @@ public class GameController {
 			return;
 		}		
 		System.out.println("update fail");
+	}
+	
+	public void updateBomb(int check, int bombCnt){
+		switch(check){
+		case 1: snake_ctr.bombCreate(bombCnt);
+		case 0: snake_ctr.bombList.clear(); ViewController.isBomb=false;
+		}
+		
 	}
 	
 }
