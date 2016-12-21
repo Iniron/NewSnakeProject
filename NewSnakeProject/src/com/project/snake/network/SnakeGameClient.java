@@ -17,6 +17,7 @@ public class SnakeGameClient {
 	
 	GameController game_ctr;
 
+	//생성자에서 서버와 연결
 	public SnakeGameClient(GameController game_ctr) {
 		this.game_ctr = game_ctr;
 		try {
@@ -32,6 +33,7 @@ public class SnakeGameClient {
 		}		
 	}	
 	
+	//서버에 객체 데이터 전달
 	public SnakeDTO sendData(SnakeDTO sendData){
 		SnakeDTO recvData = null;
 		try {

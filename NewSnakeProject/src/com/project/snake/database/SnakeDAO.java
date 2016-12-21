@@ -9,7 +9,8 @@ public class SnakeDAO {
 	
 	Connection connection;
 	
-	public SnakeDAO() {
+	//생성자에서 데이터베이스 연결
+	public SnakeDAO() {												
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -21,6 +22,7 @@ public class SnakeDAO {
 		}	
 	}
 	
+	//ID와 PASSWORD를 입력받아 회원정보 확인
 	public SnakeDTO userCheck(String id, String password){
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;;
@@ -58,6 +60,7 @@ public class SnakeDAO {
 		return data;
 	}
 	
+	//ID를 기준으로 회원정보 반환
 	public SnakeDTO getMember(String id){
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;;
@@ -94,7 +97,7 @@ public class SnakeDAO {
 		return data;
 	}
 	
-	
+	//회원정보를 Database에 저장
 	public SnakeDTO insertMember(String id, String password){
 		PreparedStatement preparedStatement = null;
 		SnakeDTO data = null;
@@ -122,6 +125,7 @@ public class SnakeDAO {
 		return data;
 	}
 	
+	//회원의 정보를 업데이트
 	public SnakeDTO updateInfo(String id, int t_score, int t_food, int t_level, int t_time){
 		PreparedStatement preparedStatement = null;
 		SnakeDTO data = null;

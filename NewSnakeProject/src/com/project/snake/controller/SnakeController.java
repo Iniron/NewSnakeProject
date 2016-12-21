@@ -32,6 +32,7 @@ public class SnakeController {
 		colorGenerator.ColorCreate();
 	}
 	
+	//캐릭터의 Head와 Tail초기 설정
 	public void snakeCreate(){
 		head = new Point(ViewController.HEGHT/2, ViewController.WIDTH/2);		
 		snake.add(head);
@@ -40,7 +41,7 @@ public class SnakeController {
 		tail = new Point(head.getY()+1, head.getX());
 		snake.addFirst(tail);
 	}
-	
+	//음식 랜덤 생성
 	public void foodCreate(){
 		int ranY = (int)(Math.random()*ViewController.HEGHT);
 		int ranX = (int)(Math.random()*ViewController.WIDTH);		
@@ -64,17 +65,17 @@ public class SnakeController {
 		}
 		bodyList.add(colorGenerator.getRandomColor());
 	}
-	
+	//폭탄 생성 스레드 호출
 	public void bombCreate(int bombCnt){
 		bombGenerator = new BombGenerator(this, bombCnt);
 		bombGenerator.start();
 	}
-	
+	//Head 추가
 	public void addHead(){
 		snake.add(food);
 		head = food;
 	}
-	
+	//캐릭터 이동
 	public void move(int y, int x){
 		head = new Point(y, x);
 		snake.add(head);

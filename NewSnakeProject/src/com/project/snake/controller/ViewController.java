@@ -135,15 +135,15 @@ public class ViewController implements Initializable {
 	boolean isDirection = false;
 	
 	SnakeDTO member = new SnakeDTO();
-	Image haedImage = new Image("head.png");
-	Image tailImage = new Image("tail.png");
-	Image bombRImage = new Image("bomb_red.png");
-	Image bombDImage = new Image("bomb.png");
-	Image bombYImage = new Image("bomb_yellow.png");
-	Image bombPImage = new Image("bomb_purple.png");
-	Image bombKImage = new Image("bomb_pink.png");
-	Image bombOImage = new Image("bomb_orange.png");
-	Image bombGImage = new Image("bomb_green.png");
+	Image haedImage = new Image("Resource/head.png");
+	Image tailImage = new Image("Resource/tail.png");
+	Image bombRImage = new Image("Resource/bomb_red.png");
+	Image bombDImage = new Image("Resource/bomb.png");
+	Image bombYImage = new Image("Resource/bomb_yellow.png");
+	Image bombPImage = new Image("Resource/bomb_purple.png");
+	Image bombKImage = new Image("Resource/bomb_pink.png");
+	Image bombOImage = new Image("Resource/bomb_orange.png");
+	Image bombGImage = new Image("Resource/bomb_green.png");
 	
 	ImagePattern haedImgPtn = new ImagePattern(haedImage);	
 	ImagePattern tailImgPtn = new ImagePattern(tailImage);
@@ -158,10 +158,11 @@ public class ViewController implements Initializable {
 		
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		Font.loadFont(getClass().getClassLoader().getResource("04B_19.ttf").toExternalForm(), 38);
+		Font.loadFont(getClass().getClassLoader().getResource("Resource/04B_19.ttf").toExternalForm(), 38);
 		game_ctr = new GameController(this);
 		//bonusLabel.textProperty().bind(arg0);
 		
+		//-------------------------------- Event Handling --------------------------------
 		gamePanel.setFocusTraversable(true);
 		gamePanel.requestFocus();
 		gamePanel.setOnKeyPressed(event->{
@@ -213,6 +214,9 @@ public class ViewController implements Initializable {
 		pauseResumeLabel.setOnMouseClicked(event->{	gamePauseView(); });
 	}
 	
+	//-------------------------------- GUI Update --------------------------------
+	
+	//Snake Panel 새로고침
 	public void repaintSnake(LinkedList<Point> snake, LinkedList<Paint> bodyList, LinkedList<Point> bombList, Point head, Point tail, Point food){
 		refreshSnakePanel();
 		snakeRects[food.getY()][food.getX()].setFill(bodyList.get(bodyList.size()-1));
@@ -230,7 +234,7 @@ public class ViewController implements Initializable {
 			}
 		}
 	}
-	
+	//Head 방향에 따른 이미지 출력
 	public void repaintHead(int y, int x){
 		snakeRects[y][x].setFill(haedImgPtn);
 		if(SnakeController.direction == Direction.RIGHT) 	 snakeRects[y][x].setRotate(90);
@@ -238,7 +242,7 @@ public class ViewController implements Initializable {
 		else if(SnakeController.direction == Direction.LEFT) snakeRects[y][x].setRotate(270);
 		else												 snakeRects[y][x].setRotate(0);
 	}
-	
+	//Tail 방향에 따른 이미지 출력
 	public void repaintTail(int y, int x, LinkedList<Point> snake){
 		snakeRects[y][x].setFill(tailImgPtn);
 		int front_x = snake.get(1).getX();
@@ -249,7 +253,7 @@ public class ViewController implements Initializable {
 		else if(front_y > y) snakeRects[y][x].setRotate(180);
 		else				 snakeRects[y][x].setRotate(0);
 	}
-	
+	//폭탄 출력
 	public void repaintBomb(LinkedList<Point> bombList){
 		for(int i=0; i<bombList.size(); i++){
 			int y = bombList.get(i).getY();
@@ -259,7 +263,7 @@ public class ViewController implements Initializable {
 			snakeRects[y][x].setOpacity(0.8);
 		}
 	}
-	
+	//SnakePanel 배경 초기화
 	public void refreshSnakePanel(){
 		for(int i=0; i<HEGHT; i++){
 			for(int j=0; j<WIDTH; j++){
@@ -267,7 +271,7 @@ public class ViewController implements Initializable {
 			}
 		}
 	}
-	
+	//초기 게임 실행시 보여지는 화면설정
 	public void initGameView(){
 		
 		//loginPanel.setVisible(false);
@@ -301,7 +305,7 @@ public class ViewController implements Initializable {
 			}
 		}
 	}
-	
+	//게임을 시작하면 보여지는 화면설정
 	public void startView(Point head, Point tail, Point food){
 
 		loginPanel.setVisible(false);
@@ -314,8 +318,7 @@ public class ViewController implements Initializable {
 		x = tail.getX();
 		snakeRects[y][x].setFill(tailImgPtn); 	//좌표에 꼬리를 위치한다.
 		
-		//---------------------------------
-		//각종 초기화 변수들
+		//-----------각종 초기화 변수들---------
 		scoreCnt = 0;
 		bonusCnt = 100;
 		foodCnt = 0;
@@ -333,7 +336,7 @@ public class ViewController implements Initializable {
 			runThread.play();
 		}
 	}
-	
+	//게임오버시 보여지는 화면 설정
 	public void gameOverView(){
 		isKey = false;
 		isStart = false;
@@ -349,7 +352,7 @@ public class ViewController implements Initializable {
 		String DurationTime = String.format("%02d:%02d", min, sec);
 		overTimeLabel.setText(DurationTime);
 	}
-	
+	//게임 중지시 보여지는 화면 설정
 	public void gamePauseView(){
 		if(pausePanel.isVisible()) 	pausePanel.setVisible(false);
 		else						pausePanel.setVisible(true);
@@ -363,13 +366,13 @@ public class ViewController implements Initializable {
 			timeThread.play();
 		}
 	}
-	
+	//화면에 그려줄 사각형의 형태 설정
 	public void rectFill(Rectangle rect, Paint color){
 		rect.setFill(color);
 		rect.setArcHeight(10);
 		rect.setArcWidth(10);
 	}
-	
+	//타이머 변경시 변수 및 SidePanel 설정 
 	public void updateTrigger() {
 		if (bonusCnt > 10) {
 			bonusCnt--;
@@ -390,7 +393,7 @@ public class ViewController implements Initializable {
 		bonusLabel.setText(Integer.toString(bonusCnt));
 		timeLabel.setText(DurationTime);
 	}
-	
+	//타이머 설정
 	public void setTimer(){
 		if (timeThread == null || timeThread.getStatus().equals(Status.STOPPED)) {
 			timeThread = new Timeline();
@@ -400,14 +403,14 @@ public class ViewController implements Initializable {
 			timeThread.play();
 		}
 	}
-	
+	//level증가시 속도 및 화면 설정
 	public void levelUp(){
 		levelCnt++;
 		levelLabel.setText(Integer.toString(levelCnt));
 		levelSpeed = levelSpeed + 0.15;
 		runThread.setRate(levelSpeed);
 	}
-	
+	//로그인시 보여지는 화면 설정
 	public void loginView(String status){
 		if(status.equals("loginok")){
 			isKey = true;
@@ -418,7 +421,7 @@ public class ViewController implements Initializable {
 		else if(status.equals("loginno"))
 			loginAlert.setText("Login Failed");
 	}
-	
+	//회원가입시 보여지는 화면 설정
 	public void joinView(String status){
 		if(status.equals("joinok")){
 			joinPanel.setVisible(false);
@@ -428,11 +431,11 @@ public class ViewController implements Initializable {
 			joinAlert.setText("Join Failed");
 		}
 	}
-	
+	//게임종료시 화면 초기화
 	public void quitView(String status){
 		refreshSidePanel();
 	}
-	
+	//SidePanel 화면 초기화
 	public void refreshSidePanel(){
 		highScoreLabel.setText(Integer.toString(member.getT_score()));
 		idLabel.setText(member.getId());
@@ -442,7 +445,7 @@ public class ViewController implements Initializable {
 		levelLabel.setText("1");
 		timeLabel.setText("00:00");
 	}
-	
+	//음식이나 level증가시 보여지는 애니메이션 설정
 	public void showAnimation(String check){
 		NotificationPanel notificationPanel = null;
 		if(check.equals("levelUp"))

@@ -31,6 +31,7 @@ public class ServerThread extends Thread{
 			while(true){
 				SnakeDTO data = (SnakeDTO)ois.readObject();
 				
+				//클라이언트로 부터 전달받은 객체의 상태비교
 				switch(data.getStatus()){
 					case "login": 
 							data = dao.userCheck(data.getId(), data.getPassword());
@@ -46,6 +47,7 @@ public class ServerThread extends Thread{
 							break;
 				}
 				
+				//클라이언트로 처리결과 반환
 				oos.writeObject(data);
 				oos.flush();
 			}

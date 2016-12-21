@@ -17,17 +17,18 @@ public class GameController {
 		this.view_ctr = view_ctr;							//ViewController의 객체를 인자로 받는다.
 		snake_ctr = new SnakeController(this);				//SnakeController 객체 생성
 		network = new SnakeGameClient(this);				//서버와 연결
-		view_ctr.initGameView();			
+		view_ctr.initGameView();							//초기화면 설정
 		
 	}
-		
+	
+	//게임시작 액션에 대한 처리
 	public void gameStart(){
 		snake_ctr.snakeCreate();
 		snake_ctr.foodCreate();
 		view_ctr.startView(snake_ctr.head, snake_ctr.tail, snake_ctr.food);
 		view_ctr.setTimer();
 	}
-	
+	//게임 재시작 액션에 대한 처리
 	public void restart(){
 		view_ctr.isKey = true;
 		snake_ctr.snake.clear();
@@ -48,7 +49,7 @@ public class GameController {
 		view_ctr.refreshSnakePanel();
 		view_ctr.refreshSidePanel();
 	}
-	
+	//게임 종료 액션에 대한 처리
 	public void quitGame(){
 		view_ctr.isKey = false;
 		if(view_ctr.isStart){
@@ -63,12 +64,12 @@ public class GameController {
 		view_ctr.refreshSnakePanel();
 		view_ctr.refreshSidePanel();
 	}
-	
+	//게임 오버 액션에 대한 처리
 	public void gameOver(){
 		checkUpdate(view_ctr.member.getId(), view_ctr.scoreCnt, view_ctr.foodCnt, view_ctr.levelCnt, view_ctr.timeCnt);
 		view_ctr.gameOverView();
 	}
-	
+	//방향이 입력에 따른 캐릭터의 방향조절 
 	public void changeDirection(Direction direction){
 		if(isDirection) return;
 		switch (direction) {
@@ -80,7 +81,7 @@ public class GameController {
 		SnakeController.direction = direction;
 		isDirection = true;
 	}
-	
+	//출동확인후 캐릭터 새로고침
 	public void changeSnake(){
 		isDirection = false;
 		switch(SnakeController.direction){
@@ -91,7 +92,7 @@ public class GameController {
 		}
 		view_ctr.repaintSnake(snake_ctr.snake, snake_ctr.bodyList, snake_ctr.bombList, snake_ctr.head, snake_ctr.tail, snake_ctr.food);
 	}
-	
+	//x, y의 좌표의 캐릭터 출동확인
 	public void checkCrash(int off_y, int off_x){
 		int y = snake_ctr.head.getY() + off_y;
 		int x = snake_ctr.head.getX() + off_x;
@@ -125,7 +126,7 @@ public class GameController {
 		}
 		snake_ctr.move(y, x);
 	}
-	
+	//로그인 액션에 따른 처리
 	public void checkLogin(String id, String password){
 		SnakeDTO data = new SnakeDTO("login", id, password, 0, 0, 0, 0);
 		data = network.sendData(data);
@@ -144,7 +145,7 @@ public class GameController {
 		}			
 		view_ctr.loginView("loginno");
 	}
-	
+	//회원가입 액션에 따른 처리
 	public void checkJoin(String id, String password, String checkPassword){
 		if(password.equals(checkPassword)){
 			SnakeDTO data = new SnakeDTO("join", id, password, 0, 0, 0, 0);
@@ -157,7 +158,7 @@ public class GameController {
 		}
 		view_ctr.joinView("joinno");
 	}
-	
+	//게임종료시 정보 업데이트 처리
 	public void checkUpdate(String id, int t_score, int t_food, int t_level, int t_time){
 		if(view_ctr.member.getT_score()>t_score) t_score = view_ctr.member.getT_score();
 		if(view_ctr.member.getT_food()>t_food) t_food = view_ctr.member.getT_food();
@@ -173,7 +174,7 @@ public class GameController {
 		}		
 		System.out.println("update fail");
 	}
-	
+	//폭탄 업데이트
 	public void updateBomb(int check, int bombCnt){
 		switch(check){
 		case 1: snake_ctr.bombCreate(bombCnt);
