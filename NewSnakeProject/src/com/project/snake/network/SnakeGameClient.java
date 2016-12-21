@@ -1,10 +1,11 @@
-package com.project.snake.app;
+package com.project.snake.network;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import com.project.snake.controller.GameController;
 import com.project.snake.database.SnakeDTO;
 
 public class SnakeGameClient {

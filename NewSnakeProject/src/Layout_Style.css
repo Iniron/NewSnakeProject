@@ -124,3 +124,16 @@ Label{
    /*  -fx-background-color : #445E79;
     -fx-text-fill        : blanchedalmond; */
 }
+
+/*--------------animation--------------*/
+.bonusStyle {
+    -fx-font-size: 60px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e0e0;
+}
+
+.levelUpStyle {
+    -fx-font-size: 60px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #35b5cc;
+}

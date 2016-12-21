@@ -1,6 +1,11 @@
-package com.project.snake.app;
+package com.project.snake.controller;
 
 import java.util.LinkedList;
+
+import com.project.snake.data.BombGenerator;
+import com.project.snake.data.ColorGenerator;
+import com.project.snake.data.Direction;
+import com.project.snake.data.Point;
 
 import javafx.scene.paint.Paint;
 
@@ -10,13 +15,13 @@ public class SnakeController {
 	
 	ColorGenerator colorGenerator;
 	BombGenerator bombGenerator;
-	LinkedList<Point> snake;
-	LinkedList<Paint> bodyList;
-	LinkedList<Point> bombList;
+	public LinkedList<Point> snake;
+	public LinkedList<Point> bombList;
+	public LinkedList<Paint> bodyList;
 	GameController game_ctr;
-	Point head;
-	Point tail;
-	Point food;
+	public Point head;
+	public Point tail;
+	public Point food;
 	
 	public SnakeController(GameController game_ctr) {
 		this.game_ctr = game_ctr; 
@@ -41,6 +46,14 @@ public class SnakeController {
 		int ranX = (int)(Math.random()*ViewController.WIDTH);		
 		food = new Point(ranY, ranX);
 		
+		for(int i = 0; i < bombList.size(); i++) {
+			int x = bombList.get(i).getX();
+			int y = bombList.get(i).getY();
+			if (x == ranX && y == ranY) {
+				foodCreate(); 
+				return;
+			}
+		}
 		for(int i = 0; i < snake.size(); i++) {
 			int x = snake.get(i).getX();
 			int y = snake.get(i).getY();
@@ -49,7 +62,6 @@ public class SnakeController {
 				return;
 			}
 		}
-		
 		bodyList.add(colorGenerator.getRandomColor());
 	}
 	

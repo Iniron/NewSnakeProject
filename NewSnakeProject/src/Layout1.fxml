@@ -12,13 +12,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.PasswordField?>
 
-<StackPane fx:controller="com.project.snake.app.ViewController"
+<StackPane fx:controller="com.project.snake.controller.ViewController"
 		xmlns:fx="http://javafx.com/fxml/1"  stylesheets="@Layout_Style.css">
 	
 	<!-- ==================== Game Panel ==================== -->
 	<HBox alignment="CENTER" spacing="30">
 	<padding><Insets top="30" right="30" bottom="20" left="30"/></padding>
-		<StackPane>
+		<StackPane fx:id="stackPane">
 			<GridPane fx:id="gamePanel" vgap="1" hgap="1"/>
 			<GridPane fx:id="snakePanel" vgap="1" hgap="1" layoutX="40" layoutY="40"/>
 			<HBox styleClass="root" fx:id="startPanel" alignment="CENTER" opacity="0.6">

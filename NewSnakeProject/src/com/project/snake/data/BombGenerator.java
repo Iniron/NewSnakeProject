@@ -1,6 +1,9 @@
-package com.project.snake.app;
+package com.project.snake.data;
 
 import java.util.LinkedList;
+
+import com.project.snake.controller.SnakeController;
+import com.project.snake.controller.ViewController;
 
 public class BombGenerator extends Thread {
 	

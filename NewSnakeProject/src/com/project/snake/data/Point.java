@@ -1,4 +1,4 @@
-package com.project.snake.app;
+package com.project.snake.data;
 
 public class Point {
 	int y;

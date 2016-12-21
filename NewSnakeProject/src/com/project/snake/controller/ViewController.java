@@ -1,9 +1,12 @@
-package com.project.snake.app;
+package com.project.snake.controller;
 
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+import com.project.snake.app.NotificationPanel;
+import com.project.snake.data.Direction;
+import com.project.snake.data.Point;
 import com.project.snake.database.SnakeDTO;
 
 import javafx.animation.Animation.Status;
@@ -18,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
@@ -48,6 +52,8 @@ public class ViewController implements Initializable {
 	private HBox overPanel;
 	@FXML
 	private HBox startPanel;
+	@FXML
+	private StackPane stackPane;
 	
 	//---------- TextField ----------
 	@FXML
@@ -152,7 +158,7 @@ public class ViewController implements Initializable {
 		
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		Font.loadFont(getClass().getResource("04B_19__.ttf").toExternalForm(), 38);
+		Font.loadFont(getClass().getClassLoader().getResource("04B_19.ttf").toExternalForm(), 38);
 		game_ctr = new GameController(this);
 		//bonusLabel.textProperty().bind(arg0);
 		
@@ -181,7 +187,7 @@ public class ViewController implements Initializable {
 					startPanel.setVisible(false);
 				}
 				if(event.getCode() == KeyCode.SPACE){
-					runThread.setRate(levelCnt+2);
+					runThread.setRate(levelSpeed+2);
 				}
 				if(event.getCode() == KeyCode.P){
 					gamePauseView();
@@ -190,7 +196,7 @@ public class ViewController implements Initializable {
 		});
 		gamePanel.setOnKeyReleased(event->{
 			if(event.getCode() == KeyCode.SPACE){
-				runThread.setRate(levelCnt);
+				runThread.setRate(levelSpeed);
 			}
 		});
 		pauseLabel.setOnMouseClicked(event->{	if(isStart) gamePauseView(); });
@@ -345,8 +351,8 @@ public class ViewController implements Initializable {
 	}
 	
 	public void gamePauseView(){
-//		if(pausePanel.isVisible()) 	pausePanel.setVisible(false);
-//		else						pausePanel.setVisible(true);
+		if(pausePanel.isVisible()) 	pausePanel.setVisible(false);
+		else						pausePanel.setVisible(true);
 
 		if(runThread.getStatus()==Status.RUNNING){
 			runThread.pause();
@@ -436,6 +442,18 @@ public class ViewController implements Initializable {
 		levelLabel.setText("1");
 		timeLabel.setText("00:00");
 	}
+	
+	public void showAnimation(String check){
+		NotificationPanel notificationPanel = null;
+		if(check.equals("levelUp"))
+			notificationPanel = new NotificationPanel("Level Up!");
+		
+		else if(check.equals("ScoreUp"))
+			notificationPanel = new NotificationPanel("+" + ((50 * levelCnt) + bonusCnt));
+		stackPane.getChildren().add(notificationPanel);
+	    notificationPanel.showScore(stackPane);
+	}
+	
 // 	키바꾸는 로직
 //	if(event.getCode() == KeyCode.T){
 //		turnKey();

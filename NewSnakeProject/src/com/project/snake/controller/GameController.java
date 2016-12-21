@@ -1,6 +1,8 @@
-package com.project.snake.app;
+package com.project.snake.controller;
 
+import com.project.snake.data.Direction;
 import com.project.snake.database.SnakeDTO;
+import com.project.snake.network.SnakeGameClient;
 
 import javafx.scene.paint.Color;
 
@@ -103,8 +105,11 @@ public class GameController {
 			snake_ctr.foodCreate();
 			view_ctr.foodCnt++;															//food 카운트 업
 			view_ctr.scoreCnt += (50 * view_ctr.levelCnt) + view_ctr.bonusCnt;			//food 점수 50 + bonus 점수
-			if(view_ctr.scoreCnt >= 500 * (int)Math.pow(view_ctr.levelCnt+1, 2))			//level 증가
+			if(view_ctr.scoreCnt >= 500 * (int)Math.pow(view_ctr.levelCnt+1, 2)){			//level 증가
 				view_ctr.levelUp();
+				view_ctr.showAnimation("levelUp");
+			}
+			else view_ctr.showAnimation("ScoreUp");
 			//조건		레벨		점수				보너스
 			//0			1		50(50*level)	100(50*level+1)	
 			//2000		2		100				150				
